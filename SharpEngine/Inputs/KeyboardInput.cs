@@ -19,6 +19,10 @@ namespace SharpEngine.Inputs
         public bool MoveDown { get; set; }
         public bool Exit { get; set; }
 
+        public bool ArrowUp { get; set; }
+        public bool ArrowDown { get; set; }
+
+
         public void ProcessInput()
         {
             KeyboardState input = Keyboard.GetState();
@@ -56,6 +60,20 @@ namespace SharpEngine.Inputs
                 MoveDown = true;
             else
                 MoveDown = false;
+
+
+
+
+
+            if (input.IsKeyDown(Key.Up))
+                ArrowUp = true;
+            else
+                ArrowUp = false;
+
+            if (input.IsKeyDown(Key.Down))
+                ArrowDown = true;
+            else
+                ArrowDown = false;
         }
     }
 }

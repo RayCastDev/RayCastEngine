@@ -17,7 +17,8 @@ namespace SharpEngine.Abstracts
 
         bool Exit { get; set; }
 
-
+        bool ArrowUp { get; set; }
+        bool ArrowDown { get; set; }
 
         void ProcessInput();
 

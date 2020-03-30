@@ -9,7 +9,7 @@ namespace SharpEngine
 {  
     public class Shader:IDisposable
     {
-        int Handle;
+        public int Handle;
         private readonly Dictionary<string, int> _uniformLocations;
         public Shader(string vertexPath, string fragmentPath)
         {
