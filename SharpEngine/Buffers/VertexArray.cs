@@ -11,23 +11,32 @@ namespace SharpEngine.Buffers
     {
         public readonly int Handle;
         public VertexBuffer VertexBuffer;
+        public VertexUVBuffer Vertex_UV_Buffer;
 
         Texture[] Textures;
 
-        public VertexArray(VertexBuffer vertexBuffer, Shader shader,Texture[] textures ,params VertexAttribute[] attributes)
+        public VertexArray(VertexBuffer vertexBuffer, VertexUVBuffer vertex_UV_Buffer, Shader shader,Texture[] textures ,params VertexAttribute[] attributes)
         {
             GL.GenVertexArrays(1, out Handle);           
             VertexBuffer = vertexBuffer;
+            Vertex_UV_Buffer = vertex_UV_Buffer;
             this.Textures = textures;
             Bind();
+
             VertexBuffer.BindBuffer();
             VertexBuffer.BufferData();
-            foreach(var attribute in attributes)
-            {
-                attribute.Set(shader);
-            }
+            attributes[0].Set(shader);
 
-            foreach(var text in textures)
+            Vertex_UV_Buffer.BindBuffer();
+            Vertex_UV_Buffer.BufferData();
+            attributes[1].Set(shader);
+
+            //foreach (var attribute in attributes)
+            //{
+            //    attribute.Set(shader);
+            //}
+
+            foreach (var text in textures)
             {
                 shader.SetInt("texture1", 0);
                 shader.SetInt("texture2", 1);

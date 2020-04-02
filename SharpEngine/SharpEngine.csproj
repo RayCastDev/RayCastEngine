@@ -73,9 +73,12 @@
     <Compile Include="Buffers\VertexAttribute.cs" />
     <Compile Include="Buffers\VertexBuffer.cs" />
     <Compile Include="Buffers\TexturedVertex.cs" />
+    <Compile Include="Buffers\VertexUVBuffer.cs" />
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Helpers\MyLibrary.cs" />
+    <Compile Include="Helpers\ObjectLoader.cs" />
+    <Compile Include="Helpers\VboIndexer.cs" />
     <Compile Include="Inputs\KeyboardInput.cs" />
     <Compile Include="Meshes\TestMeshes.cs" />
     <Compile Include="Program.cs" />
@@ -85,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bin\Debug\Resources\cube3.obj" />
+    <None Include="bin\Debug\Resources\house2.obj" />
+    <None Include="bin\Debug\Resources\stall.obj" />
     <None Include="bin\Debug\Shaders\shader2.vert" />
     <None Include="bin\Debug\Shaders\shader2.frag" />
     <None Include="OpenTK.dll.config" />
@@ -95,6 +101,8 @@
   <ItemGroup>
     <Content Include="bin\Debug\Resources\Textures\awesomeface.png" />
     <Content Include="bin\Debug\Resources\Textures\break.jpg" />
+    <Content Include="bin\Debug\Resources\Textures\checker.jpg" />
+    <Content Include="bin\Debug\Resources\Textures\house.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

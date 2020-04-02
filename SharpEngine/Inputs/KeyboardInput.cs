@@ -51,12 +51,12 @@ namespace SharpEngine.Inputs
             else
                 Exit = false;
 
-            if (input.IsKeyDown(Key.Space))
+            if (input.IsKeyDown(Key.Q))
                 MoveUp = true;
             else
                 MoveUp = false;
 
-            if (input.IsKeyDown(Key.LAlt))
+            if (input.IsKeyDown(Key.E))
                 MoveDown = true;
             else
                 MoveDown = false;

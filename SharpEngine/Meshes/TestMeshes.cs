@@ -129,5 +129,90 @@ namespace SharpEngine.Mesh
            0, -0.5f,-0.5f,        1, 0,
            0.5f, -0.5f, 0.5f,         0, 0
         };
+
+        public static readonly float[] pyramide_V =
+        {
+           0,  0.5f, 0,
+          -0.5f, -0.5f, 0.5f,
+           0.5f, -0.5f, 0.5f,
+
+           0,  0.5f, 0,
+          -0.5f, -0.5f, 0.5f,
+           0, -0.5f,-0.5f,
+
+           0,  0.5f, 0,
+           0, -0.5f,-0.5f,
+           0.5f, -0.5f, 0.5f,
+
+          -0.5f, -0.5f, 0.5f,
+           0, -0.5f,-0.5f,
+           0.5f, -0.5f, 0.5f
+        };
+
+
+
+        public static readonly float[] pyramide_UV =
+        {
+                0.5f, 1,
+                 1, 0,
+                   0, 0,
+
+                  0.5f, 1,
+                  1, 0,
+                 0, 0,
+
+                0.5f, 1,
+                   1, 0,
+                   0, 0,
+
+                   0.5f, 1,
+                1, 0,
+                  0, 0
+        };
+
+        public static readonly Vector3[] pyramide_V3 =
+        {
+          new Vector3( 0,  0.5f, 0),
+           new Vector3(-0.5f, -0.5f, 0.5f),
+            new Vector3(0.5f, -0.5f, 0.5f),
+
+           new Vector3( 0,  0.5f, 0),
+          new Vector3( -0.5f, -0.5f, 0.5f),
+           new Vector3( 0, -0.5f,-0.5f),
+
+           new Vector3( 0,  0.5f, 0),
+           new Vector3( 0, -0.5f,-0.5f),
+           new Vector3( 0.5f, -0.5f, 0.5f),
+
+           new Vector3(-0.5f, -0.5f, 0.5f),
+           new Vector3( 0, -0.5f,-0.5f),
+           new Vector3( 0.5f, -0.5f, 0.5f)
+        };
+
+        public static readonly Vector2[] pyramide_UV2 =
+        {
+            new Vector2(0.5f, 1),
+            new Vector2( 1, 0),
+             new Vector2(  0, 0),
+
+             new Vector2( 0.5f, 1),
+             new Vector2( 1, 0),
+            new Vector2( 0, 0),
+
+           new Vector2( 0.5f, 1),
+            new Vector2(   1, 0),
+             new Vector2(  0, 0),
+
+             new Vector2(  0.5f, 1),
+           new Vector2( 1, 0),
+             new Vector2( 0, 0)
+        };
     }
 }
+
+
+
+
+    
+
+

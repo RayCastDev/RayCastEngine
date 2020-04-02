@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -6,6 +7,7 @@ using OpenTK.Input;
 using SharpEngine.Abstracts;
 using SharpEngine.Buffers;
 using SharpEngine.Cameras;
+using SharpEngine.Helpers;
 using SharpEngine.Inputs;
 using SharpEngine.Mesh;
 
@@ -16,7 +18,7 @@ namespace SharpEngine
         Vector3[] cubePositions =
         {
             new Vector3(0.0f,0.0f,0.0f),
-            new Vector3(-3.8f,-2.0f,-1.0f),
+            new Vector3(-5f,0f,0f),
             new Vector3(2.1f,1.0f,-1.1f),
             new Vector3(0.0f,-1.3f,3.0f),
         };
@@ -68,20 +70,60 @@ namespace SharpEngine
             _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
             _shader.Use();
 
-            VertexBuffer vb1 = new VertexBuffer(TestMeshes.pyramide);
-            vertexArrays[1] = new VertexArray(vb1, _shader,
-                new Texture[] { new Texture("Resources/Textures/break.jpg"),},
-                new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0),
-                new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float))
+            List<Vector3> vertices = new List<Vector3>();
+            List<Vector2> uvs = new List<Vector2>();
+
+            ObjectLoader loader = new ObjectLoader();
+            loader.LoadObject("Resources/house2.obj",vertices,uvs);
+
+            List<uint> indices = new List<uint>();
+            List<Vector3> indexed_vertices = new List<Vector3>();
+            List<Vector2> indexed_uvs = new List<Vector2>();
+
+            VboIndexer vboIndexer = new VboIndexer();
+            vboIndexer.IndexVBO(vertices,uvs,indices,indexed_vertices,indexed_uvs);
+
+            VertexBuffer vb1 = new VertexBuffer(indexed_vertices.ToArray(), indices.ToArray());
+            VertexUVBuffer uvBuffer = new VertexUVBuffer(indexed_uvs.ToArray());
+
+            vertexArrays[0] = new VertexArray(vb1, uvBuffer, _shader,
+                new Texture[] { new Texture("Resources/Textures/house.png"),},
+                new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
+                new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0)
                 );
 
-            VertexBuffer vb = new VertexBuffer(TestMeshes.box);
-            vertexArrays[0] = new VertexArray(vb, _shader,
-                new Texture[] { new Texture("Resources/Textures/container.png"),
-                                new Texture("Resources/Textures/awesomeface.png") },
-                new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0),
-                new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float))
-                );
+
+
+            List<Vector3> vertices2 = new List<Vector3>();
+            List<Vector2> uvs2 = new List<Vector2>();
+
+            ObjectLoader loader2 = new ObjectLoader();
+            loader2.LoadObject("Resources/stall.obj", vertices2, uvs2);
+
+            List<uint> indices2 = new List<uint>();
+            List<Vector3> indexed_vertices2 = new List<Vector3>();
+            List<Vector2> indexed_uvs2 = new List<Vector2>();
+
+            VboIndexer vboIndexer2 = new VboIndexer();
+            vboIndexer2.IndexVBO(vertices2, uvs2, indices2, indexed_vertices2, indexed_uvs2);
+
+            VertexBuffer vb2 = new VertexBuffer(indexed_vertices2.ToArray(), indices2.ToArray());
+            VertexUVBuffer uvBuffer2 = new VertexUVBuffer(indexed_uvs2.ToArray());
+
+            vertexArrays[1] = new VertexArray(vb2, uvBuffer2, _shader,
+               new Texture[] { new Texture("Resources/Textures/house.png"), },
+               new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
+               new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0)
+               );
+
+
+            //VertexBuffer vb = new VertexBuffer(TestMeshes.box);
+            //vertexArrays[0] = new VertexArray(vb, _shader,
+            //    new Texture[] { new Texture("Resources/Textures/container.png"),
+            //                    new Texture("Resources/Textures/awesomeface.png") },
+            //    new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0),
+            //    new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float))
+            //    );
             //_texture = new Texture("Resources/Textures/container.png");
             //_texture2 = new Texture("Resources/Textures/awesomeface.png");
             //_shader.SetInt("texture1", 0);
@@ -138,24 +180,27 @@ namespace SharpEngine
             //GL.BindVertexArray(VertexArrayObjects[0]);
 
 
-            foreach (Vector3 v in cubePositions)
-            {
-                model = Matrix4.CreateTranslation(v);
-                _shader.SetMatrix4("model", model);
+            //foreach (Vector3 v in cubePositions)
+            //{
+            model = Matrix4.CreateTranslation(cubePositions[0]);
+            _shader.SetMatrix4("model", model);
                 //GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-                vertexArrays[0].Draw();
-            }
+            vertexArrays[0].Draw();
+            //}
 
             vertexArrays[1].Bind();
 
-            foreach (Vector3 v in pyramidsPositions)
-            {
-                model = Matrix4.CreateTranslation(v);
-                model *= Matrix4.CreateScale(0.7f);
-                _shader.SetMatrix4("model", model);
-                //GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-                vertexArrays[1].Draw();
-            }
+            model = Matrix4.CreateTranslation(cubePositions[1]);
+            _shader.SetMatrix4("model", model);
+            vertexArrays[1].Draw();
+            //foreach (Vector3 v in pyramidsPositions)
+            //{
+            //    model = Matrix4.CreateTranslation(v);
+            //    model *= Matrix4.CreateScale(0.7f);
+            //    _shader.SetMatrix4("model", model);
+            //    //GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+            //    vertexArrays[1].Draw();
+            //}
 
             GL.BindVertexArray(0);
 
