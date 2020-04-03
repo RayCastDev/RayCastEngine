@@ -23,7 +23,6 @@ namespace SharpEngine.Helpers
             List<Vector3> temp_vertices = new List<Vector3>();
             List<Vector2> temp_uvs = new List<Vector2>();
 
-
             string line;
             StreamReader sr = new StreamReader(path);
             while ((line = sr.ReadLine()) != null)
@@ -63,57 +62,10 @@ namespace SharpEngine.Helpers
 
                 out_vertices.Add(vertex);
                 out_uvs.Add(uv);
-            }
+            }         
 
-
-            //for (int i = 0; i < tempVertices.Count; i++)
-            //{
-            //    //PackedVertex packed = new PackedVertex(tempVertices[i], tempUVs[i]);
-
-            //    uint index;
-
-            //    //bool found = getSimilarVertexIndex_Fast(packed, VertexToOutIndex, ref index);
-            //    bool found = getSimilarVertexIndex_Slow(tempVertices[i], in_uvs[i], out_vertices, out_uvs, out index);
-
-            //    if (found)
-            //    {
-            //        vertexIndices.Add(index);
-            //    }
-            //    else
-            //    {
-            //        out_vertices.Add(tempVertices[i]);
-            //        out_uvs.Add(in_uvs[i]);
-            //        uint newindex = (uint)out_vertices.Count - 1;
-            //        vertexIndices.Add(newindex);
-            //        //VertexToOutIndex[packed] = newindex;
-            //    }
-            //}
-
-            //var l = dict.OrderBy(key=>key.Key);
-            //dict = l.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
-            //foreach (KeyValuePair<uint, uint> pair in dict)
-            //{
-            //    finalUVs.Add(tempUVs[Convert.ToInt32(pair.Value)]);
-            //}
             return true;
-        }
-
-        //bool getSimilarVertexIndex_Fast(PackedVertex packed,Dictionary<PackedVertex, uint> vertexToOutIndex, ref uint result)
-        //{
-        //    if(VertexToOutIndex.ContainsKey(packed))
-        //    {
-        //        result = VertexToOutIndex[packed];
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        
-
-       
+        }     
     }
 
 }

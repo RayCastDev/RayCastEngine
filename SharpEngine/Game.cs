@@ -74,20 +74,20 @@ namespace SharpEngine
             List<Vector2> uvs = new List<Vector2>();
 
             ObjectLoader loader = new ObjectLoader();
-            loader.LoadObject("Resources/house2.obj",vertices,uvs);
+            loader.LoadObject("Resources/stall.obj", vertices, uvs);
 
             List<uint> indices = new List<uint>();
             List<Vector3> indexed_vertices = new List<Vector3>();
             List<Vector2> indexed_uvs = new List<Vector2>();
 
             VboIndexer vboIndexer = new VboIndexer();
-            vboIndexer.IndexVBO(vertices,uvs,indices,indexed_vertices,indexed_uvs);
+            vboIndexer.IndexVBOFast(vertices, uvs, indices, indexed_vertices, indexed_uvs);
 
             VertexBuffer vb1 = new VertexBuffer(indexed_vertices.ToArray(), indices.ToArray());
             VertexUVBuffer uvBuffer = new VertexUVBuffer(indexed_uvs.ToArray());
 
             vertexArrays[0] = new VertexArray(vb1, uvBuffer, _shader,
-                new Texture[] { new Texture("Resources/Textures/house.png"),},
+                new Texture[] { new Texture("Resources/Textures/house.png"), },
                 new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
                 new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0)
                 );
@@ -105,7 +105,7 @@ namespace SharpEngine
             List<Vector2> indexed_uvs2 = new List<Vector2>();
 
             VboIndexer vboIndexer2 = new VboIndexer();
-            vboIndexer2.IndexVBO(vertices2, uvs2, indices2, indexed_vertices2, indexed_uvs2);
+            vboIndexer2.IndexVBOFast(vertices2, uvs2, indices2, indexed_vertices2, indexed_uvs2);
 
             VertexBuffer vb2 = new VertexBuffer(indexed_vertices2.ToArray(), indices2.ToArray());
             VertexUVBuffer uvBuffer2 = new VertexUVBuffer(indexed_uvs2.ToArray());
@@ -294,7 +294,7 @@ namespace SharpEngine
 
             foreach (var v in vertexArrays)
             {
-                v.ClearHandls();
+            //    v.ClearHandls();
             }
 
             //GL.DeleteBuffers(2, VertexBufferObjects);
