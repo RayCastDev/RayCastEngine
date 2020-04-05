@@ -17,7 +17,10 @@ namespace SharpEngine.Architect
         public Model(Material m, Mesh mesh, Transform transform = null) : base (transform)
         {
             material = m;
-            this.mesh = mesh; 
+            this.mesh = mesh;
+            AddComponent(m);
+            AddComponent(mesh);
+            AddComponent(transform);
         }
 
     }

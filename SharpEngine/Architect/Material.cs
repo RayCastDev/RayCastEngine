@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL4;
+using SharpEngine.Abstracts;
 
 namespace SharpEngine.Architect
 {
-    public class Material
+    public class Material : Component
     {
         public Shader shader;
-        Texture[] textures;
+        public Texture[] textures;
 
         public Material(Shader shader, Texture[] textures)
         {
@@ -35,6 +36,17 @@ namespace SharpEngine.Architect
             {
                 text.Use((TextureUnit)x);
                 x++;
+            }
+        }
+
+        public void DeleteTextures()
+        {
+            foreach (Texture text in textures)
+            {
+                if (text != null)
+                {
+                    GL.DeleteTexture(text.Handle);                 
+                }
             }
         }
     }

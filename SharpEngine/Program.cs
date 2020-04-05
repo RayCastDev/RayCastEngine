@@ -1,5 +1,4 @@
 ﻿using SharpEngine.Helpers;
-using SharpEngine.Inputs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace SharpEngine
         {
             
 
-            using (Game game = new Game(960, 540, "SharpEngine", new KeyboardInput()))
+            using (Game game = new Game(960, 540, "SharpEngine"))
             {
                 game.Run(60);
             }

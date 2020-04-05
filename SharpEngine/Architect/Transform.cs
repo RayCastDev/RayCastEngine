@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using SharpEngine.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SharpEngine.Architect
 {
-    public class Transform
+    public class Transform : Component
     {
-        public Vector3 Position { get; set; }
-        public Vector3 Rotation { get; set; }
-        public Vector3 Scaling { get; set; }
+        public Vector3 Position;
+        public Vector3 Rotation;
+        public Vector3 Scaling;
 
         public Transform(Vector3 position, Vector3 rotation, Vector3 scaling)
         {

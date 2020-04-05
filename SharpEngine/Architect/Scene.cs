@@ -35,11 +35,28 @@ namespace SharpEngine.Architect
             }
         }
 
+        public void StartComponents()
+        {
+            foreach (Model model in models)
+            {
+                model.StartComponents();
+            }
+        }
+
+        public void OnUpdateFrameComponents()
+        {
+            foreach (Model model in models)
+            {
+                model.OnUpdateFrameComponents();
+            }
+        }
+
         public void ClearHandles()
         {
             foreach(Model model in models)
             {
                 model.mesh.ClearHandles();
+                model.material.DeleteTextures();
             }
         }
     }

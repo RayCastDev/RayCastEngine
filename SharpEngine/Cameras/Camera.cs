@@ -1,5 +1,7 @@
 ﻿using OpenTK;
+using OpenTK.Input;
 using SharpEngine.Abstracts;
+using SharpEngine.Architect;
 using SharpEngine.Helpers;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SharpEngine.Cameras
 {
-    public class Camera
+    public class Camera : GameObject
     {
         
         private Vector3 _front = -Vector3.UnitZ;
@@ -101,37 +103,37 @@ namespace SharpEngine.Cameras
             _up = Vector3.Cross(_right, _front).Normalized();
         }
 
-        public void ProcessMovement(IInputHandler input, float deltaTime)
+        public void ProcessMovement(KeyboardState input, float deltaTime)
         {
             float Speed = CameraSpeed * deltaTime;
 
-            if (input.MoveForward)
+            if (input.IsKeyDown(Key.W))
             {
                 Position += Front * Speed;
             }
-            if (input.MoveBackward)
+            if (input.IsKeyDown(Key.S))
             {
                 Position -= Front * Speed;
             }
-            if (input.MoveRight)
+            if (input.IsKeyDown(Key.D))
             {
                 Position += Right * Speed;
             }
-            if (input.MoveLeft)
+            if (input.IsKeyDown(Key.A))
             {
                 Position -= Right * Speed;
             }
-            if (input.MoveUp)
+            if (input.IsKeyDown(Key.Q))
             {
                 Position += Up * Speed;
             }
-            if (input.MoveDown)
+            if (input.IsKeyDown(Key.E))
             {
                 Position -= Up * Speed;
             }
 
             if (!CanFly)
-                Position.Y = 0.0f;    
+                Position.Y = 0.0f;
         }
 
         public void ProcessLooking(float xoffset,float yoffset, float deltaTime)

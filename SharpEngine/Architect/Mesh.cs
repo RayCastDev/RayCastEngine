@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using SharpEngine.Abstracts;
 using SharpEngine.Buffers;
 using SharpEngine.Helpers;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SharpEngine.Architect
 {
-    public class Mesh
+    public class Mesh : Component
     {
         public VertexArrayBuffer VAO;
         VertexBuffer VBO;

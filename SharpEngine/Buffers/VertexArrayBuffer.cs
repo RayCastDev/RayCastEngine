@@ -23,7 +23,7 @@ namespace SharpEngine.Buffers
 
         public void CrealHandle()
         {
-            GL.DeleteBuffer(Handle);
+            GL.DeleteVertexArray(Handle);
         }
     }
 }
