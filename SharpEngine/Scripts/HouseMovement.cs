@@ -12,6 +12,7 @@ namespace SharpEngine.Scripts
 {
     public class HouseMovement : Component
     {
+        public GameObject gameObject;
         Transform transform;
         public override void OnUpdateFrame()
         {
@@ -19,11 +20,25 @@ namespace SharpEngine.Scripts
 
             if(input.IsKeyDown(Key.Up))
             {
+                if (gameObject != null)
+                {
+                    gameObject.transform.Position.Z += 2 * Time.deltaTime;
+                }
+
                 transform.Position.Z += 2 * Time.deltaTime;
             }
             if (input.IsKeyDown(Key.Down))
             {
                 transform.Position.Z -= 2 * Time.deltaTime;
+            }
+
+            if(input.IsKeyDown(Key.Left))
+            {
+                transform.Rotation.Y -= 5 * Time.deltaTime;
+            }
+            if (input.IsKeyDown(Key.Right))
+            {
+                transform.Rotation.Y += 5 * Time.deltaTime;
             }
         }
 

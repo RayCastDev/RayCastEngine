@@ -20,7 +20,9 @@ namespace SharpEngine.Architect
             if (trans != null)
                 this.transform = trans;
             else
-                this.transform = new Transform(Vector3.Zero, Vector3.Zero, Vector3.Zero);
+                this.transform = new Transform(Vector3.Zero,Vector3.Zero,Vector3.One);
+
+            components.Add(transform);
         }
 
         public void AddComponent(Component component)
@@ -31,14 +33,15 @@ namespace SharpEngine.Architect
 
         public T GetComponent<T>() where T : Component
         {
-            foreach(Component component in components)
-            {
-                if(typeof(T) == component.GetType())
-                {
-                    return component as T;
-                }
-            }
-            return null;
+            return components.Find(x => typeof(T) == x.GetType()) as T;
+            //foreach(Component component in components)
+            //{
+            //    if(typeof(T) == component.GetType())
+            //    {
+            //        return component as T;
+            //    }
+            //}
+            //return null;
         }
 
         public void StartComponents()
@@ -54,6 +57,14 @@ namespace SharpEngine.Architect
             foreach (Component component in components)
             {
                 component.OnUpdateFrame();
+            }
+        }
+
+        public void OnMouseMoveComponents()
+        {
+            foreach (Component component in components)
+            {
+                component.OnMouseMove();
             }
         }
     }

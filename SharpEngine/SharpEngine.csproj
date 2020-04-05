@@ -90,6 +90,8 @@
     <Compile Include="Meshes\TestMeshes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\CameraMovement.cs" />
+    <Compile Include="Scripts\ChangeTextureScript.cs" />
     <Compile Include="Scripts\HouseMovement.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="Texture.cs" />

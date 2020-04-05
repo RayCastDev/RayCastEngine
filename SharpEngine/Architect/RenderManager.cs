@@ -18,7 +18,23 @@ namespace SharpEngine.Architect
             model.material.shader.Use();
             model.material.shader.SetMatrix4("view", camera.GetViewMatrix());
             model.material.shader.SetMatrix4("projection", camera.GetProjectionMatrix());
-            Matrix4 model_render = Matrix4.CreateTranslation(model.transform.Position);
+
+
+            Matrix4 model_render = Matrix4.CreateScale(model.transform.Scaling);
+
+            model_render *= Matrix4.CreateRotationX(MathHelper.DegreesToRadians(model.transform.Rotation.X));
+            model_render *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(model.transform.Rotation.Y));
+            model_render *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(model.transform.Rotation.Z));
+
+            model_render *= Matrix4.CreateTranslation(model.transform.Position);
+
+
+
+
+
+
+
+
             model.material.shader.SetMatrix4("model", model_render);
 
             model.material.BindTexture();

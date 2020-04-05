@@ -39,7 +39,9 @@ namespace SharpEngine
         {
             scene = new Scene();
 
-            camera = new Camera(Vector3.UnitZ * 3, Width / (float)Height, true, 3.5f, 3);
+            camera = new Camera(new Transform(new Vector3(0,2,6), new Vector3(0,-90,0), Vector3.One), Width / (float)Height, true, 3.5f, 3);
+            camera.AddComponent(new CameraMovement());
+
             shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
             Texture stallTexture = new Texture("Resources/Textures/house.png");
             Texture stallTextureSnow = new Texture("Resources/Textures/checker.jpg");
@@ -55,13 +57,14 @@ namespace SharpEngine
               new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
               new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0));
 
-            Model stall = new Model(stallMaterial, meshStall, new Transform(Vector3.Zero, Vector3.Zero, Vector3.Zero));
-            Model stall2 = new Model(stallMaterial, meshStall, new Transform(new Vector3(-4, 0, 0), Vector3.Zero, Vector3.Zero));
-            Model house = new Model(stallMaterial, meshhouse, new Transform(new Vector3(6, 0, 0), Vector3.Zero, Vector3.Zero));
-            Model house2 = new Model(stallMaterialSnow, meshhouse, new Transform(new Vector3(15, 0, 0), Vector3.Zero, Vector3.Zero));
+            Model stall = new Model(stallMaterial, meshStall, new Transform(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1)));
+            Model stall2 = new Model(stallMaterial, meshStall, new Transform(new Vector3(-4, 0, 0), Vector3.Zero, new Vector3(1, 1, 1)));
+            Model house = new Model(stallMaterial, meshhouse, new Transform(new Vector3(6, 0, 0), Vector3.Zero, new Vector3(1,1,1)));
+            Model house2 = new Model(stallMaterialSnow, meshhouse, new Transform(new Vector3(15, 0, 0), new Vector3(0,90, 0), new Vector3(1.3f,1.3f,1.3f)));
 
-            house2.AddComponent(new HouseMovement());
+            house2.AddComponent(new HouseMovement() { gameObject = stall2 });
             house.AddComponent(new HouseMovement());
+            house2.AddComponent(new ChangeTextureScript());
 
             scene.SetCamera(camera);
             scene.AddModel(stall);
@@ -76,7 +79,9 @@ namespace SharpEngine
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-       
+
+            //Console.WriteLine(Time.deltaTime);
+
             scene.DrawScene();
           
             GL.BindVertexArray(0);
@@ -90,17 +95,16 @@ namespace SharpEngine
         {
             scene.OnUpdateFrameComponents();
 
-
             Time.deltaTime = (float)e.Time;
             if (!Focused) 
             {
                 return;
             }
 
+
             KeyboardState state = Keyboard.GetState();
 
-            camera.ProcessMovement(state, Time.deltaTime);
-        
+               
 
             if (state.IsKeyDown(Key.Escape))
             {
@@ -110,28 +114,16 @@ namespace SharpEngine
             base.OnUpdateFrame(e);
         }
 
-        bool FirstMove = true;
-        Vector2 lastPos;
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
-            if(Focused)
+            scene.OnMouseMoveComponents();
+            if (Focused)
             {
                 Mouse.SetPosition(X + Width / 2f, Y + Height / 2f);
             }
 
-            var mouse = Mouse.GetState();
+           
 
-            if (FirstMove)
-            {
-                lastPos = new Vector2(mouse.X, mouse.Y);
-                FirstMove = false;
-            }
-
-            float deltaX = mouse.X - lastPos.X;
-            float deltaY = mouse.Y - lastPos.Y;
-            lastPos = new Vector2(mouse.X, mouse.Y);
-
-            camera.ProcessLooking(deltaX, deltaY, Time.deltaTime);
             base.OnMouseMove(e);
         }
 

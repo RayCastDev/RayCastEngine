@@ -20,7 +20,6 @@ namespace SharpEngine.Architect
             this.mesh = mesh;
             AddComponent(m);
             AddComponent(mesh);
-            AddComponent(transform);
         }
 
     }

@@ -37,6 +37,7 @@ namespace SharpEngine.Architect
 
         public void StartComponents()
         {
+            camera.StartComponents();
             foreach (Model model in models)
             {
                 model.StartComponents();
@@ -45,9 +46,19 @@ namespace SharpEngine.Architect
 
         public void OnUpdateFrameComponents()
         {
+            camera.OnUpdateFrameComponents();
             foreach (Model model in models)
             {
                 model.OnUpdateFrameComponents();
+            }
+        }
+
+        public void OnMouseMoveComponents()
+        {
+            camera.OnMouseMoveComponents();
+            foreach (Model model in models)
+            {            
+                model.OnMouseMoveComponents();
             }
         }
 

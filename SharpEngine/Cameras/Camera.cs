@@ -12,19 +12,22 @@ using System.Threading.Tasks;
 namespace SharpEngine.Cameras
 {
     public class Camera : GameObject
-    {
-        
+    {        
         private Vector3 _front = -Vector3.UnitZ;
         private Vector3 _up = Vector3.UnitY;
         private Vector3 _right = Vector3.UnitX;
 
         private float _pitch;
-        private float _yaw = MathHelper.DegreesToRadians(-90);
+        private float _yaw;
         private float _fov = MathHelper.DegreesToRadians(45);
 
-        public Camera(Vector3 position, float aspectRatio, bool canFly = true ,float cameraSpeed = 1.5f, float mouseSensitivity = 2.0f)
+        public Camera(Transform transform, float aspectRatio, bool canFly = true ,float cameraSpeed = 1.5f, float mouseSensitivity = 2.0f) : base (transform)
         {
-            Position = position;
+            //transform.Position = position;
+
+            _yaw = MathHelper.DegreesToRadians(transform.Rotation.Y);
+            _pitch = MathHelper.DegreesToRadians(transform.Rotation.X);
+
             AspectRatio = aspectRatio;
             CameraSpeed = cameraSpeed;
             CanFly = canFly;
@@ -32,7 +35,7 @@ namespace SharpEngine.Cameras
         }
 
         public float CameraSpeed { get; set; }
-        public Vector3 Position;
+        //public Vector3 Position;
         public float AspectRatio {private get; set;}
         public float MouseSensitivity;
         public Vector3 Front => _front;
@@ -83,7 +86,7 @@ namespace SharpEngine.Cameras
 
         public Matrix4 GetViewMatrix()
         {
-            return Matrix4.LookAt(Position, Position + _front, _up);
+            return Matrix4.LookAt(transform.Position, transform.Position + _front, _up);
         }
 
         public Matrix4 GetProjectionMatrix()
@@ -101,40 +104,7 @@ namespace SharpEngine.Cameras
 
             _right = Vector3.Cross(_front, Vector3.UnitY).Normalized();
             _up = Vector3.Cross(_right, _front).Normalized();
-        }
-
-        public void ProcessMovement(KeyboardState input, float deltaTime)
-        {
-            float Speed = CameraSpeed * deltaTime;
-
-            if (input.IsKeyDown(Key.W))
-            {
-                Position += Front * Speed;
-            }
-            if (input.IsKeyDown(Key.S))
-            {
-                Position -= Front * Speed;
-            }
-            if (input.IsKeyDown(Key.D))
-            {
-                Position += Right * Speed;
-            }
-            if (input.IsKeyDown(Key.A))
-            {
-                Position -= Right * Speed;
-            }
-            if (input.IsKeyDown(Key.Q))
-            {
-                Position += Up * Speed;
-            }
-            if (input.IsKeyDown(Key.E))
-            {
-                Position -= Up * Speed;
-            }
-
-            if (!CanFly)
-                Position.Y = 0.0f;
-        }
+        }     
 
         public void ProcessLooking(float xoffset,float yoffset, float deltaTime)
         {
