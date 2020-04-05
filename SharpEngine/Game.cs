@@ -5,117 +5,135 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using SharpEngine.Abstracts;
+using SharpEngine.Architect;
 using SharpEngine.Buffers;
 using SharpEngine.Cameras;
 using SharpEngine.Helpers;
 using SharpEngine.Inputs;
-using SharpEngine.Mesh;
+
 
 namespace SharpEngine
 {
     public class Game : GameWindow
     {
-        Vector3[] cubePositions =
-        {
-            new Vector3(0.0f,0.0f,0.0f),
-            new Vector3(-5f,0f,0f),
-            new Vector3(2.1f,1.0f,-1.1f),
-            new Vector3(0.0f,-1.3f,3.0f),
-        };
-
-        Vector3[] pyramidsPositions =
-        {
-            new Vector3(1.5f,1.5f,1.5f),
-            new Vector3(-6.8f,4.0f,-3.0f),
-            new Vector3(-2.1f,-5.0f,-3.1f),
-            new Vector3(4.0f,-2.3f,1.0f),
-        };
-        //private VertexBuffer<TexturedVertex> vertexBuffer;
-        //private VertexArray<TexturedVertex> vertexArray;
-
         IInputHandler inputHandler;
 
-        //------------------------------------Buffers
-        int[] VertexBufferObjects = new int[2];
-        int ElementBufferObject;
-        int[] VertexArrayObjects = new int[2];
-
-        //------------------------------------Shaders
-        private Shader _shader;
-
-        //------------------------------------Textures
-        //private Texture _texture;
-        //private Texture _texture2;
-
-        //------------------------------------Cameras
-        private Camera _camera;
-
-        VertexArray[] vertexArrays;
-
+        Scene scene;
+        Camera camera;
         float deltaTime;
+        Shader shader;
 
         public Game(int width, int height, string title, IInputHandler inputHandler) : base(width, height, GraphicsMode.Default, title)
         {
             this.inputHandler = inputHandler;
         }
 
-        Matrix4 model;
         protected override void OnLoad(EventArgs e)
         {         
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            vertexArrays = new VertexArray[2];
+            //vertexArrays = new VertexArray[2];
 
-            _shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
-            _shader.Use();
+            //_shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            //_shader.Use();
 
-            List<Vector3> vertices = new List<Vector3>();
-            List<Vector2> uvs = new List<Vector2>();
+            //List<Vector3> vertices = new List<Vector3>();
+            //List<Vector2> uvs = new List<Vector2>();
 
-            ObjectLoader loader = new ObjectLoader();
-            loader.LoadObject("Resources/stall.obj", vertices, uvs);
+            ////ObjectLoader loader = new ObjectLoader();
+            //ObjectLoader.LoadObject("Resources/stall.obj", vertices, uvs);
 
-            List<uint> indices = new List<uint>();
-            List<Vector3> indexed_vertices = new List<Vector3>();
-            List<Vector2> indexed_uvs = new List<Vector2>();
+            //List<uint> indices = new List<uint>();
+            //List<Vector3> indexed_vertices = new List<Vector3>();
+            //List<Vector2> indexed_uvs = new List<Vector2>();
 
-            VboIndexer vboIndexer = new VboIndexer();
-            vboIndexer.IndexVBOFast(vertices, uvs, indices, indexed_vertices, indexed_uvs);
+            ////VboIndexer vboIndexer = new VboIndexer();
+            //VboIndexer.IndexVBOFast(vertices, uvs, indices, indexed_vertices, indexed_uvs);
 
-            VertexBuffer vb1 = new VertexBuffer(indexed_vertices.ToArray(), indices.ToArray());
-            VertexUVBuffer uvBuffer = new VertexUVBuffer(indexed_uvs.ToArray());
+            //VertexBuffer vb1 = new VertexBuffer(indexed_vertices.ToArray(), indices.ToArray());
+            //VertexUVBuffer uvBuffer = new VertexUVBuffer(indexed_uvs.ToArray());
 
-            vertexArrays[0] = new VertexArray(vb1, uvBuffer, _shader,
-                new Texture[] { new Texture("Resources/Textures/house.png"), },
-                new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
-                new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0)
-                );
+            //vertexArrays[0] = new VertexArray(vb1, uvBuffer, _shader,
+            //    new Texture[] { new Texture("Resources/Textures/house.png"), },
+            //    new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
+            //    new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0)
+            //    );
 
 
 
-            List<Vector3> vertices2 = new List<Vector3>();
-            List<Vector2> uvs2 = new List<Vector2>();
+            //List<Vector3> vertices2 = new List<Vector3>();
+            //List<Vector2> uvs2 = new List<Vector2>();
 
-            ObjectLoader loader2 = new ObjectLoader();
-            loader2.LoadObject("Resources/stall.obj", vertices2, uvs2);
+            ////ObjectLoader loader2 = new ObjectLoader();
+            //ObjectLoader.LoadObject("Resources/stall.obj", vertices2, uvs2);
 
-            List<uint> indices2 = new List<uint>();
-            List<Vector3> indexed_vertices2 = new List<Vector3>();
-            List<Vector2> indexed_uvs2 = new List<Vector2>();
+            //List<uint> indices2 = new List<uint>();
+            //List<Vector3> indexed_vertices2 = new List<Vector3>();
+            //List<Vector2> indexed_uvs2 = new List<Vector2>();
 
-            VboIndexer vboIndexer2 = new VboIndexer();
-            vboIndexer2.IndexVBOFast(vertices2, uvs2, indices2, indexed_vertices2, indexed_uvs2);
+            ////VboIndexer vboIndexer2 = new VboIndexer();
+            //VboIndexer.IndexVBOFast(vertices2, uvs2, indices2, indexed_vertices2, indexed_uvs2);
 
-            VertexBuffer vb2 = new VertexBuffer(indexed_vertices2.ToArray(), indices2.ToArray());
-            VertexUVBuffer uvBuffer2 = new VertexUVBuffer(indexed_uvs2.ToArray());
+            //VertexBuffer vb2 = new VertexBuffer(indexed_vertices2.ToArray(), indices2.ToArray());
+            //VertexUVBuffer uvBuffer2 = new VertexUVBuffer(indexed_uvs2.ToArray());
 
-            vertexArrays[1] = new VertexArray(vb2, uvBuffer2, _shader,
-               new Texture[] { new Texture("Resources/Textures/house.png"), },
+            //vertexArrays[1] = new VertexArray(vb2, uvBuffer2, _shader,
+            //   new Texture[] { new Texture("Resources/Textures/house.png"), },
+            //   new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
+            //   new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0)
+            //   );
+            //-------------------------------------------------------------
+
+           
+
+            scene = new Scene();
+
+            camera = new Camera(Vector3.UnitZ * 3, Width / (float)Height, true, 1.5f, 3);
+
+
+            shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            Texture stallTexture = new Texture("Resources/Textures/house.png");
+            Texture stallTextureSnow = new Texture("Resources/Textures/checker.jpg");
+
+
+            Material stallMaterial = new Material(shader, new Texture[] { stallTexture });
+            Material stallMaterialSnow = new Material(shader, new Texture[] { stallTextureSnow });
+
+            Mesh meshStall = new Mesh("Resources/stall.obj", shader,
                new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
-               new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0)
-               );
+               new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0));
 
+            Mesh meshhouse = new Mesh("Resources/house2.obj", shader,
+              new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
+              new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0));
+
+
+            Model stall = new Model(stallMaterial, meshStall, new Transform(Vector3.Zero, Vector3.Zero, Vector3.Zero));
+            Model stall2 = new Model(stallMaterial, meshStall, new Transform(new Vector3(-4,0,0), Vector3.Zero, Vector3.Zero));
+            Model house = new Model(stallMaterial, meshhouse, new Transform(new Vector3(6,0,0), Vector3.Zero, Vector3.Zero));
+            Model house2 = new Model(stallMaterialSnow, meshhouse, new Transform(new Vector3(15,0,0), Vector3.Zero, Vector3.Zero));
+
+            scene.SetCamera(camera);
+
+            scene.AddModel(stall);
+            scene.AddModel(stall2);
+            scene.AddModel(house);
+            scene.AddModel(house2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //--------------------------------------------------------------
 
             //VertexBuffer vb = new VertexBuffer(TestMeshes.box);
             //vertexArrays[0] = new VertexArray(vb, _shader,
@@ -157,7 +175,7 @@ namespace SharpEngine
             //GL.EnableVertexAttribArray(0);
             //GL.BindVertexArray(0);
 
-            _camera = new Camera(Vector3.UnitZ * 3, Width / (float)Height,true,1.5f,3);
+           
             CursorVisible = false;
             base.OnLoad(e);
         }
@@ -171,28 +189,28 @@ namespace SharpEngine
          
             //_texture.Use(TextureUnit.Texture0);
             //_texture2.Use(TextureUnit.Texture1);
-            vertexArrays[0].Bind();
+            //vertexArrays[0].Bind();
 
-            _shader.SetMatrix4("view", _camera.GetViewMatrix());
-            _shader.SetMatrix4("projection", _camera.GetProjectionMatrix());
+
 
 
             //GL.BindVertexArray(VertexArrayObjects[0]);
 
+            scene.DrawScene();
 
             //foreach (Vector3 v in cubePositions)
             //{
-            model = Matrix4.CreateTranslation(cubePositions[0]);
-            _shader.SetMatrix4("model", model);
+            //model = Matrix4.CreateTranslation(cubePositions[0]);
+            //_shader.SetMatrix4("model", model);
                 //GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            vertexArrays[0].Draw();
+            //vertexArrays[0].Draw();
             //}
 
-            vertexArrays[1].Bind();
+            //vertexArrays[1].Bind();
 
-            model = Matrix4.CreateTranslation(cubePositions[1]);
-            _shader.SetMatrix4("model", model);
-            vertexArrays[1].Draw();
+            //model = Matrix4.CreateTranslation(cubePositions[1]);
+            //_shader.SetMatrix4("model", model);
+            //vertexArrays[1].Draw();
             //foreach (Vector3 v in pyramidsPositions)
             //{
             //    model = Matrix4.CreateTranslation(v);
@@ -222,16 +240,16 @@ namespace SharpEngine
             }
 
             inputHandler.ProcessInput();
-            _camera.ProcessMovement(inputHandler, deltaTime);
+            camera.ProcessMovement(inputHandler, deltaTime);
 
-            if (inputHandler.ArrowUp)
-            {
-                cubePositions[0].Z += 2 * deltaTime;
-            }
-            if (inputHandler.ArrowDown)
-            {
-                cubePositions[0].Z -= 2 * deltaTime;
-            }
+            //if (inputHandler.ArrowUp)
+            //{
+            //    cubePositions[0].Z += 2 * deltaTime;
+            //}
+            //if (inputHandler.ArrowDown)
+            //{
+            //    cubePositions[0].Z -= 2 * deltaTime;
+            //}
             //_camera.Position = cubePositions[0] + new Vector3(-2, 2, 3);
 
             //cubePositions[0].Z += speed * deltaTime;
@@ -269,20 +287,20 @@ namespace SharpEngine
             float deltaY = mouse.Y - lastPos.Y;
             lastPos = new Vector2(mouse.X, mouse.Y);
 
-            _camera.ProcessLooking(deltaX, deltaY, deltaTime);
+            camera.ProcessLooking(deltaX, deltaY, deltaTime);
             base.OnMouseMove(e);
         }
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            _camera.FOV -= e.DeltaPrecise;
+            camera.FOV -= e.DeltaPrecise;
             base.OnMouseWheel(e);
         }
 
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, Width, Height);
-            _camera.AspectRatio = Width / (float)Height;
+            camera.AspectRatio = Width / (float)Height;
             base.OnResize(e);
         }
 
@@ -292,15 +310,17 @@ namespace SharpEngine
             GL.BindVertexArray(0);
             GL.UseProgram(0);
 
-            foreach (var v in vertexArrays)
-            {
-            //    v.ClearHandls();
-            }
+            scene.ClearHandles();
+
+            //foreach (var v in vertexArrays)
+            //{
+            ////    v.ClearHandls();
+            //}
 
             //GL.DeleteBuffers(2, VertexBufferObjects);
             //GL.DeleteVertexArrays(2, VertexArrayObjects);
 
-            _shader.Dispose();
+            shader.Dispose();
 
             //GL.DeleteTexture(_texture.Handle);
             //GL.DeleteTexture(_texture2.Handle);

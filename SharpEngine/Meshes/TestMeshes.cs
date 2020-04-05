@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpEngine.Mesh
+namespace SharpEngine.Meshes
 {
     public class TestMeshes
     {

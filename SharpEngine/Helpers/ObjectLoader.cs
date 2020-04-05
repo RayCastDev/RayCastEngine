@@ -14,7 +14,7 @@ namespace SharpEngine.Helpers
     {
 
 
-        public bool LoadObject(string path, List<Vector3> out_vertices, List<Vector2> out_uvs)
+        public static bool LoadObject(string path, List<Vector3> out_vertices, List<Vector2> out_uvs)
         {
             List<uint> vertexIndices, uvIndices;
             vertexIndices = new List<uint>();

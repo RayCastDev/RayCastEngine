@@ -69,10 +69,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstracts\IInputHandler.cs" />
+    <Compile Include="Architect\GameObject.cs" />
+    <Compile Include="Architect\Material.cs" />
+    <Compile Include="Architect\Mesh.cs" />
+    <Compile Include="Architect\Model.cs" />
+    <Compile Include="Architect\RenderManager.cs" />
+    <Compile Include="Architect\Scene.cs" />
+    <Compile Include="Architect\Transform.cs" />
     <Compile Include="Buffers\VertexArray.cs" />
+    <Compile Include="Buffers\VertexArrayBuffer.cs" />
     <Compile Include="Buffers\VertexAttribute.cs" />
     <Compile Include="Buffers\VertexBuffer.cs" />
     <Compile Include="Buffers\TexturedVertex.cs" />
+    <Compile Include="Buffers\VertexElementBuffer.cs" />
     <Compile Include="Buffers\VertexUVBuffer.cs" />
     <Compile Include="Cameras\Camera.cs" />
     <Compile Include="Game.cs" />
@@ -103,6 +112,7 @@
     <Content Include="bin\Debug\Resources\Textures\break.jpg" />
     <Content Include="bin\Debug\Resources\Textures\checker.jpg" />
     <Content Include="bin\Debug\Resources\Textures\house.png" />
+    <Content Include="bin\Debug\Resources\Textures\house_snow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

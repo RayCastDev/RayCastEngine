@@ -34,6 +34,10 @@ namespace SharpEngine.Buffers
             GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 2 * sizeof(float), vertices, BufferUsageHint.StaticDraw);
         }
 
+        public void CrealHandle()
+        {
+            GL.DeleteBuffer(Handle);
+        }
         //public void Draw()
         //{
         //    GL.DrawArrays(PrimitiveType.Triangles, 0, vertices.Length * 2);

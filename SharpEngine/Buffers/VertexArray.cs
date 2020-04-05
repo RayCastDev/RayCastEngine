@@ -1,4 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK;
+using OpenTK.Graphics.OpenGL4;
+using SharpEngine.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +11,22 @@ namespace SharpEngine.Buffers
 {
     public class VertexArray
     {
+
+
         public readonly int Handle;
         public VertexBuffer VertexBuffer;
         public VertexUVBuffer Vertex_UV_Buffer;
 
         Texture[] Textures;
 
+        public VertexArray(string path, params VertexAttribute[] attributes)
+        {
+           
+        }
+
         public VertexArray(VertexBuffer vertexBuffer, VertexUVBuffer vertex_UV_Buffer, Shader shader,Texture[] textures ,params VertexAttribute[] attributes)
         {
+            
             GL.GenVertexArrays(1, out Handle);           
             VertexBuffer = vertexBuffer;
             Vertex_UV_Buffer = vertex_UV_Buffer;
@@ -60,7 +70,7 @@ namespace SharpEngine.Buffers
 
         public void Draw()
         {
-            VertexBuffer.Draw();
+           // VertexBuffer.Draw();
         }
 
         public void ClearHandls()
@@ -73,5 +83,7 @@ namespace SharpEngine.Buffers
             GL.DeleteBuffer(Handle);
         }
 
+
+       
     }
 }

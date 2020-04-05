@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using SharpEngine.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,13 @@ namespace SharpEngine.Buffers
     public class VertexBuffer
     {
         public int Handle;
-        public int HandleEBO;
         private Vector3[] vertices;
-        private uint[] indicies;
 
-        public VertexBuffer(Vector3[] vertices, uint[] ind = null)
+
+        public VertexBuffer(Vector3[] vertices)
         {
             this.Handle = GL.GenBuffer();
-            this.HandleEBO = GL.GenBuffer();
             this.vertices = vertices;
-            this.indicies = ind;
         }
 
         //public void AddVertices(float[] v)
@@ -31,29 +29,30 @@ namespace SharpEngine.Buffers
         public void BindBuffer()
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer, Handle);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, HandleEBO);
         }
 
         public void BufferData()
         {
             GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * 3 * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-            if (indicies != null)
-            {
-                GL.BufferData(BufferTarget.ElementArrayBuffer, indicies.Length * sizeof(uint), indicies, BufferUsageHint.StaticDraw);
-            }
+
         }
 
-        public void Draw()
+        public void CrealHandle()
         {
-            if (indicies != null)
-            {
-                GL.DrawElements(PrimitiveType.Triangles, indicies.Length, DrawElementsType.UnsignedInt, 0);
-            }
-            else
-            {
-                GL.DrawArrays(PrimitiveType.Triangles, 0, vertices.Length * 3);
-            }
+            GL.DeleteBuffer(Handle);
         }
+
+        //public void Draw()
+        //{
+        //    //if (indicies != null)
+        //    //{
+        //    //    GL.DrawElements(PrimitiveType.Triangles, indicies.Length, DrawElementsType.UnsignedInt, 0);
+        //    //}
+        //    //else
+        //    //{
+        //        GL.DrawArrays(PrimitiveType.Triangles, 0, vertices.Length * 3);
+        //    //}
+        //}
 
     }
 }

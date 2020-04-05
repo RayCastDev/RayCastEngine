@@ -66,14 +66,15 @@ namespace SharpEngine.Helpers
         }
 
 
-        Dictionary<VertexData, uint> ht = new Dictionary<VertexData, uint>();
+       
 
-        public void IndexVBOFast(List<Vector3> in_vertices,
+        public static void  IndexVBOFast(List<Vector3> in_vertices,
                             List<Vector2> in_uvs,
                             List<uint> out_indices,
                             List<Vector3> out_vertices,
                             List<Vector2> out_uvs)
         {
+            Dictionary<VertexData, uint> ht = new Dictionary<VertexData, uint>();
             var watch = System.Diagnostics.Stopwatch.StartNew();
             for (int i = 0; i < in_vertices.Count; i++)
             {
@@ -99,7 +100,7 @@ namespace SharpEngine.Helpers
             Console.WriteLine($"Time execution fast: {watch.ElapsedMilliseconds} ms");
         }
 
-        bool getSimilarVertexIndex_Fast(VertexData vertexData,
+        static bool getSimilarVertexIndex_Fast(VertexData vertexData,
                                        Dictionary<VertexData, uint> dictionary,
                                        out uint result)
         {
