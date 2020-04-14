@@ -16,6 +16,7 @@ namespace SharpEngine.Architect
         VertexBuffer VBO;
         public VertexElementBuffer EBO;
         VertexUVBuffer UV_VBO;
+        VertexNormalBuffer N_VBO;
 
         public Mesh(string path, Shader shader ,params VertexAttribute[] attributes)
         {
@@ -33,12 +34,14 @@ namespace SharpEngine.Architect
         {
             List<Vector3> vertices = new List<Vector3>();
             List<Vector2> uvs = new List<Vector2>();
-            ObjectLoader.LoadObject(path, vertices, uvs);
+            List<Vector3> normals = new List<Vector3>();
+            ObjectLoader.LoadObject(path, vertices, uvs, normals);
 
             List<uint> indices = new List<uint>();
             List<Vector3> indexed_vertices = new List<Vector3>();
             List<Vector2> indexed_uvs = new List<Vector2>();
-            VboIndexer.IndexVBOFast(vertices, uvs, indices, indexed_vertices, indexed_uvs);
+            List<Vector3> indexed_normals = new List<Vector3>();
+            VboIndexer.IndexVBOFast(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
 
             VBO = new VertexBuffer(indexed_vertices.ToArray());
             VBO.BindBuffer();
@@ -50,9 +53,17 @@ namespace SharpEngine.Architect
             UV_VBO.BufferData();
             attributes[1].Set(shader);
 
+            N_VBO = new VertexNormalBuffer(indexed_normals.ToArray());
+            N_VBO.BindBuffer();
+            N_VBO.BufferData();
+            attributes[2].Set(shader);
+
             EBO = new VertexElementBuffer(indices.ToArray());
             EBO.BindBuffer();
             EBO.BufferData();
+
+
+
         }
 
         public void ClearHandles()

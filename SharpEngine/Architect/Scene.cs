@@ -11,6 +11,7 @@ namespace SharpEngine.Architect
     {
         List<Model> models;
         Camera camera;
+        Model lightPoint;
 
         public Scene()
         {
@@ -27,11 +28,16 @@ namespace SharpEngine.Architect
             this.camera = camera;
         }
 
+        public void SetLight(Model light)
+        {
+            lightPoint = light;
+        }
+
         public void DrawScene()
         {
             foreach(Model model in models)
             {
-                RenderManager.Draw(model,camera);
+                RenderManager.Draw(model,camera, lightPoint);
             }
         }
 

@@ -108,7 +108,12 @@ namespace SharpEngine
             GL.UniformMatrix4(_uniformLocations[name],true, ref data);
         }
 
-
+        public void SetVector3(string name, Vector3 vector)
+        {
+            GL.UseProgram(Handle);
+            if(_uniformLocations.ContainsKey(name))
+            GL.Uniform3(_uniformLocations[name], vector);
+        }
 
         private bool disposeValue = false;
 

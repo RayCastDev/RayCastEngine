@@ -14,14 +14,16 @@ namespace SharpEngine.Helpers
     {
 
 
-        public static bool LoadObject(string path, List<Vector3> out_vertices, List<Vector2> out_uvs)
+        public static bool LoadObject(string path, List<Vector3> out_vertices, List<Vector2> out_uvs, List<Vector3> out_normals)
         {
-            List<uint> vertexIndices, uvIndices;
+            List<uint> vertexIndices, uvIndices, normalIndicies;
             vertexIndices = new List<uint>();
             uvIndices = new List<uint>();
+            normalIndicies = new List<uint>();
 
             List<Vector3> temp_vertices = new List<Vector3>();
             List<Vector2> temp_uvs = new List<Vector2>();
+            List<Vector3> temp_normals = new List<Vector3>();
 
             string line;
             StreamReader sr = new StreamReader(path);
@@ -45,7 +47,13 @@ namespace SharpEngine.Helpers
                             string[] indices = line_elements[i].Split('/');
                             vertexIndices.Add(uint.Parse(indices[0]));
                             uvIndices.Add(uint.Parse(indices[1]));
+                            normalIndicies.Add(uint.Parse(indices[2]));
                         }                        
+                        break;
+                    case "vn":
+                        temp_normals.Add(new Vector3(float.Parse(line_elements[1]),
+                                                     float.Parse(line_elements[2]),
+                                                     float.Parse(line_elements[3])));
                         break;
                 }
                
@@ -55,13 +63,15 @@ namespace SharpEngine.Helpers
             {
                 uint vertexIndex = vertexIndices[i];
                 uint uvIndex = uvIndices[i];
+                uint normalIndex = normalIndicies[i];
 
                 Vector3 vertex = temp_vertices[(int)vertexIndex - 1];
                 Vector2 uv = temp_uvs[(int)uvIndex - 1];
-
+                Vector3 normal = temp_normals[(int)normalIndex - 1];
 
                 out_vertices.Add(vertex);
                 out_uvs.Add(uv);
+                out_normals.Add(normal);
             }         
 
             return true;

@@ -11,7 +11,7 @@ namespace SharpEngine.Architect
 {
     class RenderManager
     {
-        public static void Draw(Model model, Camera camera)
+        public static void Draw(Model model, Camera camera, Model lightPoint)
         {
             model.mesh.VAO.Bind();
 
@@ -37,6 +37,12 @@ namespace SharpEngine.Architect
 
             model.material.shader.SetMatrix4("model", model_render);
 
+
+            model.material.shader.SetVector3("viewPos", camera.transform.Position);
+            model.material.shader.SetVector3("lightPos", lightPoint.transform.Position);
+
+
+            model.material.SetColors();
             model.material.BindTexture();
             model.material.SetTextures();
 

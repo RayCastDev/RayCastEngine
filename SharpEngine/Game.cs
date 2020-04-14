@@ -19,6 +19,7 @@ namespace SharpEngine
         Camera camera;
         //float deltaTime;
         Shader shader;
+        Shader lampShader;
 
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title)
         {
@@ -26,7 +27,7 @@ namespace SharpEngine
 
         protected override void OnLoad(EventArgs e)
         {
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
             InitScene();
@@ -42,35 +43,67 @@ namespace SharpEngine
             camera = new Camera(new Transform(new Vector3(0,2,6), new Vector3(0,-90,0), Vector3.One), Width / (float)Height, true, 3.5f, 3);
             camera.AddComponent(new CameraMovement());
 
-            shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
-            Texture stallTexture = new Texture("Resources/Textures/house.png");
-            Texture stallTextureSnow = new Texture("Resources/Textures/checker.jpg");
+            #region lightCube
+            shader = new Shader("Shaders/shader.vert", "Shaders/newShader.frag");
+            lampShader = new Shader("Shaders/shader.vert", "Shaders/lamp.frag");
 
-            Material stallMaterial = new Material(shader, new Texture[] { stallTexture });
-            Material stallMaterialSnow = new Material(shader, new Texture[] { stallTextureSnow });
+            Material cubeMat = new Material(new Vector3(1, 0.5f, 0.31f), new Vector3(1, 1, 1), shader);
+            Material lampMat = new Material(lampShader);
 
-            Mesh meshStall = new Mesh("Resources/stall.obj", shader,
+            Mesh meshCube = new Mesh("Resources/cubeN.obj", shader,
                new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
-               new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0));
+               new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0),
+               new VertexAttribute("aNormal", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0));
 
-            Mesh meshhouse = new Mesh("Resources/house2.obj", shader,
-              new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
-              new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0));
+            Model cube = new Model(cubeMat, meshCube);
+            Model lampModel = new Model(lampMat, meshCube, new Transform(new Vector3(2, 1.5f, -2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
 
-            Model stall = new Model(stallMaterial, meshStall, new Transform(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1)));
-            Model stall2 = new Model(stallMaterial, meshStall, new Transform(new Vector3(-4, 0, 0), Vector3.Zero, new Vector3(1, 1, 1)));
-            Model house = new Model(stallMaterial, meshhouse, new Transform(new Vector3(6, 0, 0), Vector3.Zero, new Vector3(1,1,1)));
-            Model house2 = new Model(stallMaterialSnow, meshhouse, new Transform(new Vector3(15, 0, 0), new Vector3(0,90, 0), new Vector3(1.3f,1.3f,1.3f)));
 
-            house2.AddComponent(new HouseMovement() { gameObject = stall2 });
-            house.AddComponent(new HouseMovement());
-            house2.AddComponent(new ChangeTextureScript());
+            lampModel.AddComponent(new HouseMovement());
+           
 
             scene.SetCamera(camera);
-            scene.AddModel(stall);
-            scene.AddModel(stall2);
-            scene.AddModel(house);
-            scene.AddModel(house2);
+            scene.SetLight(lampModel);
+
+            scene.AddModel(cube);
+            scene.AddModel(lampModel);
+            #endregion
+
+
+            #region BaseScene
+            ////shader = new Shader("Shaders/shader.vert", "Shaders/shader.frag");
+            //Texture stallTexture = new Texture("Resources/Textures/house.png");
+            //Texture stallTextureSnow = new Texture("Resources/Textures/checker.jpg");
+
+            //Material stallMaterial = new Material(shader, new Texture[] { stallTexture });
+            //Material stallMaterialSnow = new Material(shader, new Texture[] { stallTextureSnow });
+
+            //Mesh meshStall = new Mesh("Resources/stallN.obj", shader,
+            //   new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
+            //   new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0),
+            //   new VertexAttribute("aNormal", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0));
+
+            //Mesh meshhouse = new Mesh("Resources/house2N.obj", shader,
+            //  new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0),
+            //  new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0),
+            //  new VertexAttribute("aNormal", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0));
+
+            //Model stall = new Model(stallMaterial, meshStall, new Transform(Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1)));
+            //Model stall2 = new Model(stallMaterial, meshStall, new Transform(new Vector3(-4, 0, 0), Vector3.Zero, new Vector3(1, 1, 1)));
+            //Model house = new Model(stallMaterial, meshhouse, new Transform(new Vector3(6, 0, 0), Vector3.Zero, new Vector3(1, 1, 1)));
+            //Model house2 = new Model(stallMaterialSnow, meshhouse, new Transform(new Vector3(15, 0, 0), new Vector3(0, 90, 0), new Vector3(1.3f, 1.3f, 1.3f)));
+
+            //house2.AddComponent(new HouseMovement() { gameObject = stall2 });
+            //house.AddComponent(new HouseMovement());
+            //house2.AddComponent(new ChangeTextureScript());
+
+            //scene.SetCamera(camera);
+            //scene.AddModel(stall);
+            //scene.AddModel(stall2);
+            //scene.AddModel(house);
+            //scene.AddModel(house2);
+            #endregion
+
 
             scene.StartComponents();
         }
@@ -148,7 +181,10 @@ namespace SharpEngine
 
             scene.ClearHandles();
 
-            shader.Dispose();
+            if (shader != null)
+                shader.Dispose();
+            if(lampShader!=null)
+                lampShader.Dispose();
 
             base.OnUnload(e);
         }

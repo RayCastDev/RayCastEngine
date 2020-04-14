@@ -32,11 +32,21 @@ namespace SharpEngine.Scripts
                 transform.Position.Z -= 2 * Time.deltaTime;
             }
 
-            if(input.IsKeyDown(Key.Left))
+            if (input.IsKeyDown(Key.Left))
+            {
+                transform.Position.X -= 2 * Time.deltaTime;
+            }
+            if (input.IsKeyDown(Key.Right))
+            {
+                transform.Position.X += 2 * Time.deltaTime;
+            }
+
+
+            if (input.IsKeyDown(Key.X))
             {
                 transform.Rotation.Y -= 5 * Time.deltaTime;
             }
-            if (input.IsKeyDown(Key.Right))
+            if (input.IsKeyDown(Key.C))
             {
                 transform.Rotation.Y += 5 * Time.deltaTime;
             }

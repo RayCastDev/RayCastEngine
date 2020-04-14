@@ -13,9 +13,13 @@ namespace SharpEngine.Helpers
     {
         public void IndexVBO(List<Vector3> in_vertices, 
                              List<Vector2> in_uvs, 
+                             List<Vector3> in_normals,
+
                              List<uint> out_indices, 
+
                              List<Vector3> out_vertices, 
-                             List<Vector2> out_uvs)
+                             List<Vector2> out_uvs,
+                             List<Vector3> out_normals)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
             for(int i = 0; i<in_vertices.Count;i++)
@@ -32,6 +36,7 @@ namespace SharpEngine.Helpers
                     out_vertices.Add(in_vertices[i]);
                     out_uvs.Add(in_uvs[i]);
                     out_indices.Add((uint)out_vertices.Count - 1);
+                    out_normals.Add(in_normals[i]);
                 }
             }
             watch.Stop();
@@ -69,16 +74,20 @@ namespace SharpEngine.Helpers
        
 
         public static void  IndexVBOFast(List<Vector3> in_vertices,
-                            List<Vector2> in_uvs,
-                            List<uint> out_indices,
-                            List<Vector3> out_vertices,
-                            List<Vector2> out_uvs)
+                                         List<Vector2> in_uvs,
+                                         List<Vector3> in_normals,
+
+                                         List<uint> out_indices,
+
+                                         List<Vector3> out_vertices,
+                                         List<Vector2> out_uvs,
+                                         List<Vector3> out_normals)
         {
             Dictionary<VertexData, uint> ht = new Dictionary<VertexData, uint>();
             var watch = System.Diagnostics.Stopwatch.StartNew();
             for (int i = 0; i < in_vertices.Count; i++)
             {
-                VertexData vertexData = new VertexData(in_vertices[i], in_uvs[i]);
+                VertexData vertexData = new VertexData(in_vertices[i], in_uvs[i], in_normals[i]);
 
                 uint index;
                 bool found = getSimilarVertexIndex_Fast(vertexData, ht, out index);
@@ -91,6 +100,7 @@ namespace SharpEngine.Helpers
                 {
                     out_vertices.Add(in_vertices[i]);
                     out_uvs.Add(in_uvs[i]);
+                    out_normals.Add(in_normals[i]);
                     uint newIndex = (uint)out_vertices.Count - 1;
                     out_indices.Add(newIndex);
                     ht[vertexData] = newIndex;
@@ -115,11 +125,13 @@ namespace SharpEngine.Helpers
         {
             Vector3 vertice;
             Vector2 uv;
+            Vector3 normal;
 
-            public VertexData(Vector3 vertice, Vector2 uv)
+            public VertexData(Vector3 vertice, Vector2 uv, Vector3 normal)
             {
                 this.vertice = vertice;
                 this.uv = uv;
+                this.normal = normal;
             }
         }
     }
