@@ -113,6 +113,12 @@
     <None Include="packages.config" />
     <None Include="bin\Debug\Shaders\shader.frag" />
     <None Include="bin\Debug\Shaders\shader.vert" />
+    <None Include="Shaders\lamp.frag" />
+    <None Include="Shaders\newShader.frag" />
+    <None Include="Shaders\shader.frag" />
+    <None Include="Shaders\shader.vert" />
+    <None Include="Shaders\shader2.frag" />
+    <None Include="Shaders\shader2.vert" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\Resources\Textures\awesomeface.png" />

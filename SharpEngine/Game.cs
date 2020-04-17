@@ -38,6 +38,8 @@ namespace SharpEngine
 
         private void InitScene()
         {
+            string fileToRead = Environment.CurrentDirectory;
+            Console.WriteLine(fileToRead);
             scene = new Scene();
 
             camera = new Camera(new Transform(new Vector3(0,2,6), new Vector3(0,-90,0), Vector3.One), Width / (float)Height, true, 3.5f, 3);
