@@ -118,6 +118,8 @@
     <Content Include="bin\Debug\Resources\Textures\awesomeface.png" />
     <Content Include="bin\Debug\Resources\Textures\break.jpg" />
     <Content Include="bin\Debug\Resources\Textures\checker.jpg" />
+    <Content Include="bin\Debug\Resources\Textures\cubeSpec.png" />
+    <Content Include="bin\Debug\Resources\Textures\cubeText.png" />
     <Content Include="bin\Debug\Resources\Textures\house.png" />
     <Content Include="bin\Debug\Resources\Textures\house_snow.png" />
   </ItemGroup>

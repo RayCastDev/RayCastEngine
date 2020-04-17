@@ -16,6 +16,10 @@ namespace SharpEngine.Architect
             model.mesh.VAO.Bind();
 
             model.material.shader.Use();
+            model.material.shader.SetVector3("viewPos", camera.transform.Position);
+            model.material.SetMaterialParams();
+            model.material.shader.SetVector3("light.position", lightPoint.transform.Position);
+
             model.material.shader.SetMatrix4("view", camera.GetViewMatrix());
             model.material.shader.SetMatrix4("projection", camera.GetProjectionMatrix());
 
@@ -30,7 +34,7 @@ namespace SharpEngine.Architect
 
 
 
-
+           
 
 
 
@@ -38,11 +42,9 @@ namespace SharpEngine.Architect
             model.material.shader.SetMatrix4("model", model_render);
 
 
-            model.material.shader.SetVector3("viewPos", camera.transform.Position);
-            model.material.shader.SetVector3("lightPos", lightPoint.transform.Position);
+           
 
-
-            model.material.SetColors();
+            
             model.material.BindTexture();
             model.material.SetTextures();
 

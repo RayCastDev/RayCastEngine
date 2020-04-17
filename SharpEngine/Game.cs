@@ -47,7 +47,24 @@ namespace SharpEngine
             shader = new Shader("Shaders/shader.vert", "Shaders/newShader.frag");
             lampShader = new Shader("Shaders/shader.vert", "Shaders/lamp.frag");
 
-            Material cubeMat = new Material(new Vector3(1, 0.5f, 0.31f), new Vector3(1, 1, 1), shader);
+            Texture boxTexture = new Texture("Resources/Textures/cubeText.png");
+            Texture boxTexture2 = new Texture("Resources/Textures/cubeSpec.png");
+
+            Material cubeMat = new Material(shader, new Texture[] { boxTexture , boxTexture2});
+            cubeMat.ambient = new Vector3(0.3f,0.5f,0.31f);
+            cubeMat.diffuse = new Vector3(0.3f, 0.5f, 0.31f);
+            cubeMat.specular = new Vector3(0.5f, 0.5f, 0.5f);
+            cubeMat.shininess = 32f;
+
+            cubeMat.lightAmbient = new Vector3(0.2f, 0.2f, 0.2f);
+            cubeMat.lightDiffuse = new Vector3(0.5f, 0.5f, 0.5f);
+            cubeMat.lightSpecular = new Vector3(1.0f, 1.0f, 1.0f);
+            cubeMat.lightDirection = new Vector3(0.5f, -0.5f, 0.5f);
+
+            cubeMat.linear = 0.09f;
+            cubeMat.constatnt = 1f;
+            cubeMat.qudratic = 0.032f;
+
             Material lampMat = new Material(lampShader);
 
             Mesh meshCube = new Mesh("Resources/cubeN.obj", shader,
@@ -56,16 +73,22 @@ namespace SharpEngine
                new VertexAttribute("aNormal", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0));
 
             Model cube = new Model(cubeMat, meshCube);
+            Model cube2 = new Model(cubeMat, meshCube, new Transform(new Vector3(-5, 0, 0), new Vector3(0, 45, 30), new Vector3(1, 1, 1)));
+            Model cube3 = new Model(cubeMat, meshCube, new Transform(new Vector3(-2, 1, 1), new Vector3(0, 90, 50), new Vector3(1, 1, 1)));
+            Model cube4 = new Model(cubeMat, meshCube, new Transform(new Vector3(-7, -4, 3), new Vector3(45, 45, 45), new Vector3(1, 1, 1)));
             Model lampModel = new Model(lampMat, meshCube, new Transform(new Vector3(2, 1.5f, -2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
 
 
             lampModel.AddComponent(new HouseMovement());
-           
+           // cube.AddComponent(new HouseMovement());
 
             scene.SetCamera(camera);
             scene.SetLight(lampModel);
 
             scene.AddModel(cube);
+            scene.AddModel(cube2);
+            scene.AddModel(cube3);
+            scene.AddModel(cube4);
             scene.AddModel(lampModel);
             #endregion
 
@@ -113,7 +136,7 @@ namespace SharpEngine
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            //Console.WriteLine(Time.deltaTime);
+           // Console.WriteLine(Time.deltaTime);
 
             scene.DrawScene();
           

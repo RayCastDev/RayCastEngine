@@ -15,7 +15,8 @@ namespace SharpEngine
 
             using (Game game = new Game(960, 540, "SharpEngine"))
             {
-                game.Run(60);
+                game.VSync = OpenTK.VSyncMode.Off;
+                game.Run(120);
             }
         }
     }

@@ -11,8 +11,20 @@ namespace SharpEngine.Architect
 {
     public class Material : Component
     {
-        public Vector3 objectColor;
-        public Vector3 lightColor;
+        public Vector3 ambient;
+        public Vector3 diffuse;
+        public Vector3 specular;
+        public float shininess;
+
+        public Vector3 lightAmbient;
+        public Vector3 lightDiffuse;
+        public Vector3 lightSpecular;
+        public Vector3 lightDirection;
+
+        public float constatnt;
+        public float linear;
+        public float qudratic;
+
 
         public Shader shader;
         public Texture[] textures;
@@ -27,19 +39,36 @@ namespace SharpEngine.Architect
             this.textures = textures;
         }
 
-        public Material(Vector3 baseColor, Vector3 lightColor, Shader shader):this(shader)
-        {
-            this.objectColor = baseColor;
-            this.lightColor = lightColor;
-        }
 
-
-        public void SetColors()
+        public void SetMaterialParams()
         {
-            if (objectColor != Vector3.Zero && lightColor != Vector3.Zero)
+            if (ambient != Vector3.Zero && 
+                specular != Vector3.Zero && 
+                diffuse != Vector3.Zero && 
+                shininess != 0 &&
+
+                lightAmbient != Vector3.Zero &&
+                lightDiffuse != Vector3.Zero &&
+                lightSpecular != Vector3.Zero &&
+                lightDirection != Vector3.Zero&&
+
+                constatnt != 0 &&
+                linear != 0 &&
+                qudratic != 0)
             {
-                shader.SetVector3("objectColor", objectColor);
-                shader.SetVector3("lightColor", lightColor);
+                shader.SetVector3("material.ambient", ambient);
+                shader.SetVector3("material.specular", specular);
+                shader.SetVector3("material.diffuse", diffuse);
+                shader.SetFloat("material.shininess", shininess);
+
+                shader.SetVector3("light.diffuse", lightDiffuse);
+                shader.SetVector3("light.specular", lightSpecular);
+                shader.SetVector3("light.ambient", lightAmbient);
+                shader.SetVector3("light.direction", lightDirection);
+
+                shader.SetFloat("light.constant", constatnt);
+                shader.SetFloat("light.linear", linear);
+                shader.SetFloat("light.quadratic", qudratic);
             }
         }
 
@@ -49,8 +78,8 @@ namespace SharpEngine.Architect
             {
                 foreach (var text in textures)
                 {
-                    shader.SetInt("texture1", 0);
-                    shader.SetInt("texture2", 1);
+                    shader.SetInt("material.diffuse", 0);
+                    shader.SetInt("material.specular", 1);
                 }
             }
         }

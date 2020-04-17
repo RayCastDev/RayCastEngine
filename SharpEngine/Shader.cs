@@ -99,6 +99,14 @@ namespace SharpEngine
         {
             //int location = GL.GetUniformLocation(Handle, name);
             GL.UseProgram(Handle);
+            if (_uniformLocations.ContainsKey(name))
+                GL.Uniform1(_uniformLocations[name], value);
+        }
+
+        public void SetFloat(string name, float value)
+        {
+            //int location = GL.GetUniformLocation(Handle, name);
+            GL.UseProgram(Handle);
             GL.Uniform1(_uniformLocations[name], value);
         }
 
