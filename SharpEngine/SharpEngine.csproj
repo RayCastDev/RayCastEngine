@@ -101,10 +101,13 @@
     <None Include="App.config" />
     <None Include="bin\Debug\Resources\cube3.obj" />
     <None Include="bin\Debug\Resources\cubeN.obj" />
+    <None Include="bin\Debug\Resources\ground.obj" />
     <None Include="bin\Debug\Resources\house2.obj" />
     <None Include="bin\Debug\Resources\house2N.obj" />
+    <None Include="bin\Debug\Resources\houseTest.obj" />
     <None Include="bin\Debug\Resources\stall.obj" />
     <None Include="bin\Debug\Resources\stallN.obj" />
+    <None Include="bin\Debug\Resources\stallTest.obj" />
     <None Include="bin\Debug\Shaders\lamp.frag" />
     <None Include="bin\Debug\Shaders\newShader.frag" />
     <None Include="bin\Debug\Shaders\shader2.vert" />
