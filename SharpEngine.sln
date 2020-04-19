@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.960
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpEngine", "SharpEngine\SharpEngine.csproj", "{63A95FBE-AE55-4DCC-94FD-E4B98E70A95F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelLoader", "ModelLoader\ModelLoader.csproj", "{B20AD23A-3541-465E-9F91-C4A8680A63C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{63A95FBE-AE55-4DCC-94FD-E4B98E70A95F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A95FBE-AE55-4DCC-94FD-E4B98E70A95F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A95FBE-AE55-4DCC-94FD-E4B98E70A95F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B20AD23A-3541-465E-9F91-C4A8680A63C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B20AD23A-3541-465E-9F91-C4A8680A63C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B20AD23A-3541-465E-9F91-C4A8680A63C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B20AD23A-3541-465E-9F91-C4A8680A63C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

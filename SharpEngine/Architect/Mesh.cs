@@ -1,77 +1,64 @@
 ﻿using OpenTK;
 using SharpEngine.Abstracts;
 using SharpEngine.Buffers;
-using SharpEngine.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ModelLoader.Factories;
+using OpenTK.Graphics.OpenGL4;
 
 namespace SharpEngine.Architect
 {
     public class Mesh : Component
     {
-        public VertexArrayBuffer VAO;
-        VertexBuffer VBO;
-        public VertexElementBuffer EBO;
-        VertexUVBuffer UV_VBO;
-        VertexNormalBuffer N_VBO;
+        internal VertexArrayObject VertexArrayObject;
+        internal VertexBufferObject<uint> ElementBufferObject;
 
-        public Mesh(string path, Shader shader ,params VertexAttribute[] attributes)
+        private VertexBufferObject<Vector3> vertexPositions;
+        private VertexBufferObject<Vector2> vertexUVs;
+        private VertexBufferObject<Vector3> vertexNormals;
+
+        public Mesh(string path, Shader shader)
         {
-            CreateVAO();
-            CreateBuffers(path, shader, attributes);
+            CreateVao();
+            CreateBuffers(path, shader);
         }
 
-        void CreateVAO()
+        private void CreateVao()
         {
-            VAO = new VertexArrayBuffer();
-            VAO.Bind();
+            VertexArrayObject = new VertexArrayObject();
+            VertexArrayObject.Bind();
         }
 
-        void CreateBuffers(string path, Shader shader, VertexAttribute[] attributes)
+        public void CreateBuffers(string path, Shader shader)
         {
-            List<Vector3> vertices = new List<Vector3>();
-            List<Vector2> uvs = new List<Vector2>();
-            List<Vector3> normals = new List<Vector3>();
-            ObjectLoader.LoadObject(path, vertices, uvs, normals);
+            var modelLoader = LoaderFactory.GetModelLoader(path);
+            var indices = new List<uint>();
+            var indexedVertices = new List<Vector3>();
+            var indexedUvs = new List<Vector2>();
+            var indexedNormals = new List<Vector3>();
+            modelLoader.LoadModel(path, indices, indexedVertices, indexedUvs, indexedNormals);
 
-            List<uint> indices = new List<uint>();
-            List<Vector3> indexed_vertices = new List<Vector3>();
-            List<Vector2> indexed_uvs = new List<Vector2>();
-            List<Vector3> indexed_normals = new List<Vector3>();
-            VboIndexer.IndexVBOFast(vertices, uvs, normals, indices, indexed_vertices, indexed_uvs, indexed_normals);
+            vertexPositions = new VertexBufferObject<Vector3>(indexedVertices.ToArray(),3,BufferTarget.ArrayBuffer,BufferUsageHint.StaticDraw);
+            var vertexAttribute = new VertexAttribute("aPosition", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            vertexAttribute.Set(shader);
 
-            VBO = new VertexBuffer(indexed_vertices.ToArray());
-            VBO.BindBuffer();
-            VBO.BufferData();
-            attributes[0].Set(shader);
+            vertexUVs = new VertexBufferObject<Vector2>(indexedUvs.ToArray(),2, BufferTarget.ArrayBuffer,BufferUsageHint.StaticDraw);
+            vertexAttribute = new VertexAttribute("aTexCoord", 2, VertexAttribPointerType.Float, false, 2 * sizeof(float), 0);
+            vertexAttribute.Set(shader);
 
-            UV_VBO = new VertexUVBuffer(indexed_uvs.ToArray());
-            UV_VBO.BindBuffer();
-            UV_VBO.BufferData();
-            attributes[1].Set(shader);
+            vertexNormals = new VertexBufferObject<Vector3>(indexedNormals.ToArray(),3, BufferTarget.ArrayBuffer,BufferUsageHint.StaticDraw);
+            vertexAttribute = new VertexAttribute("aNormal", 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            vertexAttribute.Set(shader);
 
-            N_VBO = new VertexNormalBuffer(indexed_normals.ToArray());
-            N_VBO.BindBuffer();
-            N_VBO.BufferData();
-            attributes[2].Set(shader);
-
-            EBO = new VertexElementBuffer(indices.ToArray());
-            EBO.BindBuffer();
-            EBO.BufferData();
-
-
-
+            ElementBufferObject = new VertexBufferObject<uint>(indices.ToArray(),1,BufferTarget.ElementArrayBuffer,BufferUsageHint.StaticDraw);
         }
 
         public void ClearHandles()
         {
-            VAO.CrealHandle();
-            VBO.CrealHandle();
-            EBO.CrealHandle();
-            UV_VBO.CrealHandle();
+            VertexArrayObject.ClearHandle();
+            vertexPositions.ClearHandle();
+            vertexUVs.ClearHandle();
+            vertexNormals.ClearHandle();
+            ElementBufferObject.ClearHandle();
         }
     }
 }

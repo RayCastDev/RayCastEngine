@@ -29,7 +29,7 @@ namespace SharpEngine.Scripts
             {
                 if (!materialChanged)
                 {
-                    mat.textures[0] = texture1;
+                    mat.Textures[0] = texture1;
                     materialChanged = true;
                 }
             }
@@ -37,7 +37,7 @@ namespace SharpEngine.Scripts
             {
                 if (materialChanged)
                 {
-                    mat.textures[0] = texture2;
+                    mat.Textures[0] = texture2;
                     materialChanged = false;
                 }
             }

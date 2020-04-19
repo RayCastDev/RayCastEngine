@@ -7,23 +7,23 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace SharpEngine.Buffers
 {
-    public class VertexArrayBuffer
+    internal class VertexArrayObject
     {
-        private int Handle;
+        private readonly int handle;
 
-        public VertexArrayBuffer()
+        public VertexArrayObject()
         {
-            Handle = GL.GenVertexArray();
+            handle = GL.GenVertexArray();
         }
 
         public void Bind()
         {
-            GL.BindVertexArray(Handle);
+            GL.BindVertexArray(handle);
         }
 
-        public void CrealHandle()
+        public void ClearHandle()
         {
-            GL.DeleteVertexArray(Handle);
+            GL.DeleteVertexArray(handle);
         }
     }
 }

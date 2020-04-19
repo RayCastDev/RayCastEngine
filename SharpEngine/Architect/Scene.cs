@@ -1,21 +1,17 @@
-﻿using SharpEngine.Cameras;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using SharpEngine.Cameras;
 
 namespace SharpEngine.Architect
 {
     public class Scene
     {
-        List<Model> models;
-        Camera camera;
-        Model lightPoint;
+        private readonly List<Model> models;
+        public Camera Camera;
+        public Model LightPoint;
 
         public Scene()
         {
-            this.models = new List<Model>();
+            models = new List<Model>();
         }
 
         public void AddModel(Model model)
@@ -25,26 +21,26 @@ namespace SharpEngine.Architect
 
         public void SetCamera(Camera camera)
         {
-            this.camera = camera;
+            Camera = camera;
         }
 
         public void SetLight(Model light)
         {
-            lightPoint = light;
+            LightPoint = light;
         }
 
         public void DrawScene()
         {
-            foreach(Model model in models)
+            foreach(var model in models)
             {
-                RenderManager.Draw(model,camera, lightPoint);
+                RenderManager.Draw(model,Camera, LightPoint);
             }
         }
 
         public void StartComponents()
         {
-            camera.StartComponents();
-            foreach (Model model in models)
+            Camera.StartComponents();
+            foreach (var model in models)
             {
                 model.StartComponents();
             }
@@ -52,8 +48,8 @@ namespace SharpEngine.Architect
 
         public void OnUpdateFrameComponents()
         {
-            camera.OnUpdateFrameComponents();
-            foreach (Model model in models)
+            Camera.OnUpdateFrameComponents();
+            foreach (var model in models)
             {
                 model.OnUpdateFrameComponents();
             }
@@ -61,8 +57,8 @@ namespace SharpEngine.Architect
 
         public void OnMouseMoveComponents()
         {
-            camera.OnMouseMoveComponents();
-            foreach (Model model in models)
+            Camera.OnMouseMoveComponents();
+            foreach (var model in models)
             {            
                 model.OnMouseMoveComponents();
             }
@@ -70,10 +66,10 @@ namespace SharpEngine.Architect
 
         public void ClearHandles()
         {
-            foreach(Model model in models)
+            foreach(var model in models)
             {
-                model.mesh.ClearHandles();
-                model.material.DeleteTextures();
+                model.Mesh.ClearHandles();
+                model.Material.DeleteTextures();
             }
         }
     }

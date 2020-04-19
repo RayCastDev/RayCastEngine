@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SharpEngine.Abstracts;
 
@@ -11,105 +6,82 @@ namespace SharpEngine.Architect
 {
     public class Material : Component
     {
-        public Vector3 ambient;
-        public Vector3 diffuse;
-        public Vector3 specular;
-        public float shininess;
+        public Vector3 Ambient;
 
-        public Vector3 lightAmbient;
-        public Vector3 lightDiffuse;
-        public Vector3 lightSpecular;
-        public Vector3 lightDirection;
+        public float Constant;
+        public Vector3 Diffuse;
 
-        public float constatnt;
-        public float linear;
-        public float qudratic;
+        public Vector3 LightAmbient;
+        public Vector3 LightDiffuse;
+        public Vector3 LightDirection;
+        public Vector3 LightSpecular;
+        public float Linear;
+        public float Quadratic;
 
 
-        public Shader shader;
-        public Texture[] textures;
+        public Shader Shader;
+        public float Shininess;
+        public Vector3 Specular;
+        public Texture[] Textures;
 
         public Material(Shader shader)
         {
-            this.shader = shader;
+            this.Shader = shader;
         }
 
-        public Material(Shader shader, Texture[] textures): this(shader)
+        public Material(Shader shader, Texture[] textures) : this(shader)
         {
-            this.textures = textures;
+            this.Textures = textures;
         }
 
 
         public void SetMaterialParams()
         {
-            if (ambient != Vector3.Zero && 
-                specular != Vector3.Zero && 
-                diffuse != Vector3.Zero && 
-                shininess != 0 &&
+            if (Ambient == Vector3.Zero || Specular == Vector3.Zero || Diffuse == Vector3.Zero || Shininess == 0 ||
+                LightAmbient == Vector3.Zero || LightDiffuse == Vector3.Zero || LightSpecular == Vector3.Zero ||
+                LightDirection == Vector3.Zero || Constant == 0 || Linear == 0 || Quadratic == 0) return;
 
-                lightAmbient != Vector3.Zero &&
-                lightDiffuse != Vector3.Zero &&
-                lightSpecular != Vector3.Zero &&
-                lightDirection != Vector3.Zero&&
+            Shader.SetVector3("material.ambient", Ambient);
+            Shader.SetVector3("material.specular", Specular);
+            Shader.SetVector3("material.diffuse", Diffuse);
+            Shader.SetFloat("material.shininess", Shininess);
 
-                constatnt != 0 &&
-                linear != 0 &&
-                qudratic != 0)
-            {
-                shader.SetVector3("material.ambient", ambient);
-                shader.SetVector3("material.specular", specular);
-                shader.SetVector3("material.diffuse", diffuse);
-                shader.SetFloat("material.shininess", shininess);
+            Shader.SetVector3("light.diffuse", LightDiffuse);
+            Shader.SetVector3("light.specular", LightSpecular);
+            Shader.SetVector3("light.ambient", LightAmbient);
+            Shader.SetVector3("light.direction", LightDirection);
 
-                shader.SetVector3("light.diffuse", lightDiffuse);
-                shader.SetVector3("light.specular", lightSpecular);
-                shader.SetVector3("light.ambient", lightAmbient);
-                shader.SetVector3("light.direction", lightDirection);
-
-                shader.SetFloat("light.constant", constatnt);
-                shader.SetFloat("light.linear", linear);
-                shader.SetFloat("light.quadratic", qudratic);
-            }
+            Shader.SetFloat("light.constant", Constant);
+            Shader.SetFloat("light.linear", Linear);
+            Shader.SetFloat("light.quadratic", Quadratic);
         }
 
         public void SetTextures()
         {
-            if (textures != null)
-            {
-                foreach (var text in textures)
-                {
-                    shader.SetInt("material.diffuse", 0);
-                    shader.SetInt("material.specular", 1);
-                }
-            }
+            if (Textures == null) return;
+
+            Shader.SetInt("material.diffuse", 0);
+            Shader.SetInt("material.specular", 1);
         }
 
         public void BindTexture()
         {
-            if (textures != null)
+            if (Textures == null) return;
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            var x = 33984;
+            foreach (var text in Textures)
             {
-                GL.BindTexture(TextureTarget.Texture2D, 0);
-                int x = 33984;
-                foreach (Texture text in textures)
-                {
-                    text.Use((TextureUnit)x);
-                    x++;
-                }
+                text.Use((TextureUnit) x);
+                x++;
             }
         }
 
         public void DeleteTextures()
         {
-            if (textures != null)
-            {
-                foreach (Texture text in textures)
-                {
-                    if (text != null)
-                    {
-                        GL.DeleteTexture(text.Handle);
-                    }
-                }
-            }
+            if (Textures == null) return;
+            foreach (var text in Textures)
+                if (text != null)
+                    GL.DeleteTexture(text.Handle);
         }
     }
 }

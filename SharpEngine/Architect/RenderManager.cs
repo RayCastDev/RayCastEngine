@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SharpEngine.Cameras;
 
 namespace SharpEngine.Architect
 {
-    class RenderManager
+    public class RenderManager
     {
         public static void Draw(Model model, Camera camera, Model lightPoint)
         {
-            model.mesh.VAO.Bind();
+            model.Mesh.VertexArrayObject.Bind();
 
-            model.material.shader.Use();
-            model.material.shader.SetVector3("viewPos", camera.transform.Position);
-            model.material.SetMaterialParams();
-            model.material.shader.SetVector3("light.position", lightPoint.transform.Position);
+            model.Material.Shader.Use();
+            model.Material.Shader.SetVector3("viewPos", camera.transform.Position);
+            model.Material.SetMaterialParams();
+            model.Material.Shader.SetVector3("light.position", lightPoint.transform.Position);
 
-            model.material.shader.SetMatrix4("view", camera.GetViewMatrix());
-            model.material.shader.SetMatrix4("projection", camera.GetProjectionMatrix());
+            model.Material.Shader.SetMatrix4("view", camera.GetViewMatrix());
+            model.Material.Shader.SetMatrix4("projection", camera.GetProjectionMatrix());
 
 
-            Matrix4 model_render = Matrix4.CreateScale(model.transform.Scaling);
+            Matrix4 modelRender = Matrix4.CreateScale(model.transform.Scaling);
 
-            model_render *= Matrix4.CreateRotationX(MathHelper.DegreesToRadians(model.transform.Rotation.X));
-            model_render *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(model.transform.Rotation.Y));
-            model_render *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(model.transform.Rotation.Z));
+            modelRender *= Matrix4.CreateRotationX(MathHelper.DegreesToRadians(model.transform.Rotation.X));
+            modelRender *= Matrix4.CreateRotationY(MathHelper.DegreesToRadians(model.transform.Rotation.Y));
+            modelRender *= Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(model.transform.Rotation.Z));
 
-            model_render *= Matrix4.CreateTranslation(model.transform.Position);
+            modelRender *= Matrix4.CreateTranslation(model.transform.Position);
 
 
 
@@ -39,16 +34,17 @@ namespace SharpEngine.Architect
 
 
 
-            model.material.shader.SetMatrix4("model", model_render);
+            model.Material.Shader.SetMatrix4("model", modelRender);
 
 
            
 
             
-            model.material.BindTexture();
-            model.material.SetTextures();
+            model.Material.BindTexture();
+            model.Material.SetTextures();
 
-            GL.DrawElements(PrimitiveType.Triangles, model.mesh.EBO.indicies.Length, DrawElementsType.UnsignedInt, 0);
+            //GL.DrawElements(PrimitiveType.Triangles, model.Mesh.ElementBufferObject.indicies.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, model.Mesh.ElementBufferObject.VertexData.Length, DrawElementsType.UnsignedInt, 0);
         }
     }
 }
