@@ -1,11 +1,11 @@
-﻿using OpenTK;
-using OpenTK.Graphics.OpenGL4;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using OpenTK;
+using OpenTK.Graphics.OpenGL4;
 
-namespace SharpEngine
+namespace SharpEngine.Render
 {  
     public class Shader:IDisposable
     {

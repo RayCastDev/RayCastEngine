@@ -1,11 +1,12 @@
 ﻿using OpenTK.Input;
-using SharpEngine.Abstracts;
-using SharpEngine.Architect;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpEngine.Components;
+using SharpEngine.Components.Base;
+using SharpEngine.Render;
 
 namespace SharpEngine.Scripts
 {
@@ -14,12 +15,12 @@ namespace SharpEngine.Scripts
         bool materialChanged = false;
         Texture texture1;
         Texture texture2;
-        Material mat;
+        MaterialModel mat;
         public override void Start()
         {
             texture1 = new Texture("Resources/Textures/house.png");
             texture2 = new Texture("Resources/Textures/checker.jpg");
-            mat = owner.GetComponent<Material>();
+            mat = owner.GetComponent<MeshRenderer>().Material as MaterialModel;
         }
         public override void OnUpdateFrame()
         {

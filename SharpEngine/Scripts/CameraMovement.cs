@@ -1,55 +1,50 @@
 ﻿using OpenTK;
 using OpenTK.Input;
-using SharpEngine.Abstracts;
-using SharpEngine.Architect;
-using SharpEngine.Cameras;
 using SharpEngine.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SharpEngine.Components;
+using SharpEngine.Components.Base;
 
 namespace SharpEngine.Scripts
 {
     public class CameraMovement: Component
     {
-        Transform transform;
-        Camera camera;
+        private Transform transform;
+        private Camera camera;
 
-        bool FirstMove = true;
-        Vector2 lastPos;
+        private bool firstMove = true;
+        private Vector2 lastPos;
 
 
         public override void OnUpdateFrame()
         {
             KeyboardState input = Keyboard.GetState();
 
-            float Speed = camera.CameraSpeed * Time.deltaTime;
+            float speed = camera.CameraSpeed * Time.deltaTime;
 
             if (input.IsKeyDown(Key.W))
             {
-                transform.Position += camera.Front * Speed;
+                transform.Position += camera.Front * speed;
             }
             if (input.IsKeyDown(Key.S))
             {
-                transform.Position -= camera.Front * Speed;
+                transform.Position -= camera.Front * speed;
             }
             if (input.IsKeyDown(Key.D))
             {
-                transform.Position += camera.Right * Speed;
+                transform.Position += camera.Right * speed;
             }
             if (input.IsKeyDown(Key.A))
             {
-                transform.Position -= camera.Right * Speed;
+                transform.Position -= camera.Right * speed;
             }
             if (input.IsKeyDown(Key.Q))
             {
-                transform.Position += camera.Up * Speed;
+                transform.Position += camera.Up * speed;
             }
             if (input.IsKeyDown(Key.E))
             {
-                transform.Position -= camera.Up * Speed;
+                transform.Position -= camera.Up * speed;
             }
 
             if (!camera.CanFly)
@@ -60,10 +55,10 @@ namespace SharpEngine.Scripts
         {
             var mouse = Mouse.GetState();
 
-            if (FirstMove)
+            if (firstMove)
             {
                 lastPos = new Vector2(mouse.X, mouse.Y);
-                FirstMove = false;
+                firstMove = false;
             }
 
             float deltaX = mouse.X - lastPos.X;
@@ -75,8 +70,8 @@ namespace SharpEngine.Scripts
 
         public override void Start()
         {
-            camera = owner as Camera;
-            transform = owner.GetComponent<Transform>();
+            camera = owner.GetComponent<Camera>();
+            transform = owner.Transform;
             Console.WriteLine("Camera Loaded");
         }
     }

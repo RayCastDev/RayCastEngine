@@ -79,7 +79,7 @@ namespace ModelLoader.ModelLoaders
             VboIndexer.IndexVboFast(outVertices, outUvs, outNormals, outIndices, outIndexedVertices,outIndexedUvs,outIndexedNormals);
 
             watch.Stop();
-            Console.WriteLine($"Obj Loaded! Loading time: {watch.ElapsedMilliseconds} ms");
+            Console.WriteLine($"Obj {Path.GetFileName(pathToModel)} Loaded! Loading time: {watch.ElapsedMilliseconds} ms");
             
             return true;
         }

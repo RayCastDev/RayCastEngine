@@ -1,12 +1,13 @@
 ﻿using OpenTK.Input;
-using SharpEngine.Abstracts;
-using SharpEngine.Architect;
 using SharpEngine.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpEngine.Components;
+using SharpEngine.Components.Base;
+using SharpEngine.GameObjects;
 
 namespace SharpEngine.Scripts
 {
@@ -22,7 +23,7 @@ namespace SharpEngine.Scripts
             {
                 if (gameObject != null)
                 {
-                    gameObject.transform.Position.Z += 2 * Time.deltaTime;
+                    gameObject.Transform.Position.Z += 2 * Time.deltaTime;
                 }
 
                 transform.Position.Z += 2 * Time.deltaTime;
@@ -54,7 +55,7 @@ namespace SharpEngine.Scripts
 
         public  override void Start()
         {
-            transform = owner.GetComponent<Transform>();
+            transform = owner.Transform;
             Console.WriteLine("House Loaded");
         }
 

@@ -1,11 +1,6 @@
-﻿using SharpEngine.Architect;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SharpEngine.GameObjects;
 
-namespace SharpEngine.Abstracts
+namespace SharpEngine.Components.Base
 {
     public class Component
     {

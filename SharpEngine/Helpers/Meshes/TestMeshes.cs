@@ -1,12 +1,6 @@
 ﻿using OpenTK;
-using SharpEngine.Buffers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SharpEngine.Meshes
+namespace SharpEngine.Helpers.Meshes
 {
     public class TestMeshes
     {

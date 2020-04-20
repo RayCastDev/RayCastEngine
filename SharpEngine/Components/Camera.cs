@@ -1,17 +1,10 @@
-﻿using OpenTK;
-using OpenTK.Input;
-using SharpEngine.Abstracts;
-using SharpEngine.Architect;
-using SharpEngine.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using OpenTK;
+using SharpEngine.Components.Base;
 
-namespace SharpEngine.Cameras
+namespace SharpEngine.Components
 {
-    public class Camera : GameObject
+    public class Camera : Component
     {        
         private Vector3 _front = -Vector3.UnitZ;
         private Vector3 _up = Vector3.UnitY;
@@ -21,17 +14,18 @@ namespace SharpEngine.Cameras
         private float _yaw;
         private float _fov = MathHelper.DegreesToRadians(45);
 
-        public Camera(Transform transform, float aspectRatio, bool canFly = true ,float cameraSpeed = 1.5f, float mouseSensitivity = 2.0f) : base (transform)
+        public Camera(float aspectRatio, bool canFly = true ,float cameraSpeed = 1.5f, float mouseSensitivity = 2.0f)
         {
-            //transform.Position = position;
-
-            _yaw = MathHelper.DegreesToRadians(transform.Rotation.Y);
-            _pitch = MathHelper.DegreesToRadians(transform.Rotation.X);
-
             AspectRatio = aspectRatio;
             CameraSpeed = cameraSpeed;
             CanFly = canFly;
             MouseSensitivity = mouseSensitivity;
+        }
+
+        public override void Start()
+        {
+            _yaw = MathHelper.DegreesToRadians(owner.Transform.Rotation.Y);
+            _pitch = MathHelper.DegreesToRadians(owner.Transform.Rotation.X);
         }
 
         public float CameraSpeed { get; set; }
@@ -86,7 +80,7 @@ namespace SharpEngine.Cameras
 
         public Matrix4 GetViewMatrix()
         {
-            return Matrix4.LookAt(transform.Position, transform.Position + _front, _up);
+            return Matrix4.LookAt(owner.Transform.Position, owner.Transform.Position + _front, _up);
         }
 
         public Matrix4 GetProjectionMatrix()

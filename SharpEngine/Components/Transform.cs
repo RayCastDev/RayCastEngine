@@ -1,7 +1,7 @@
 ﻿using OpenTK;
-using SharpEngine.Abstracts;
+using SharpEngine.Components.Base;
 
-namespace SharpEngine.Architect
+namespace SharpEngine.Components
 {
     public class Transform : Component
     {
