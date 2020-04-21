@@ -66,10 +66,11 @@ namespace SharpEngine
             };
 
             LampShader = new Shader("Shaders/shader.vert", "Shaders/lamp.frag");
-            var cubeMat = new ColorMaterial(LampShader, new Vector3(0.3f, 0.3f, 0.8f));
+            var cubeMat = new ColorMaterial(LampShader, new Vector3(0f, 0f, 1f));
+            var cubeMat2 = new ColorMaterial(LampShader, new Vector3(1f, 1f, 0f));
 
-            var pointLight = new Light(LampShader,LightType.PointLight,new Vector3(0.3f,0.3f,0.8f) * 0.4f, new Vector3(1,1,1), 0.032f,0.09f, 1);
-            var pointLight2 = new Light(LampShader,LightType.PointLight,new Vector3(0.3f,0.3f,0.8f) * 0.4f, new Vector3(1,1,1), 0.032f,0.09f, 1);
+            var pointLight2 = new Light(LampShader,LightType.PointLight,new Vector3(1f,1f,0f) * 1.0f, new Vector3(1,1,1), 0.032f,0.09f, 1);
+            var pointLight = new Light(LampShader,LightType.PointLight,new Vector3(0f,0f,1f) * 1.0f, new Vector3(1,1,1), 0.032f,0.09f, 1);
             var directionalLight = new Light(LampShader,LightType.DirectionalLight,new Vector3(0.15f,0.15f,0.15f), new Vector3(1,1,1), 0.032f,0.09f, 1);
             Camera = new Camera(Width / (float) Height, true, 3.5f, 3);
 
@@ -82,13 +83,13 @@ namespace SharpEngine
             cameraGameObject.AddComponent(Camera);
             cameraGameObject.AddComponent(new CameraMovement());
 
-            GameObject pointLightGameObject = new GameObject(new Transform(new Vector3(2, 1.5f, -2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
+            GameObject pointLightGameObject = new GameObject(new Transform(new Vector3(2, 4f, 2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
             pointLightGameObject.AddComponent(new MeshRenderer(meshCube, cubeMat));
             pointLightGameObject.AddComponent(new HouseMovement());
             pointLightGameObject.AddComponent(pointLight);
 
             GameObject pointLight2GameObject = new GameObject(new Transform(new Vector3(2, 4f, -2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
-            pointLight2GameObject.AddComponent(new MeshRenderer(meshCube, cubeMat));
+            pointLight2GameObject.AddComponent(new MeshRenderer(meshCube, cubeMat2));
             //pointLight2GameObject.AddComponent(new HouseMovement());
             pointLight2GameObject.AddComponent(pointLight2);
 
