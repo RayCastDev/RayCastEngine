@@ -72,7 +72,7 @@ namespace SharpEngine.Scripts
         {
             camera = owner.GetComponent<Camera>();
             transform = owner.Transform;
-            Console.WriteLine("Camera Loaded");
+            Console.WriteLine("MainCamera Loaded");
         }
     }
 }

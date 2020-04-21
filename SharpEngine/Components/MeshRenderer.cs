@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System.Collections.Generic;
+using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SharpEngine.Buffers;
 using SharpEngine.Components.Base;
@@ -48,10 +49,10 @@ namespace SharpEngine.Components
 
         }
 
-        public void RenderMesh(Camera camera, Light light)
+        public void RenderMesh(Camera camera, List<Light> lights)
         {
             vertexArrayObject.Bind();
-            Material.SetMaterialParams(camera,light, owner.Transform);
+            Material.SetMaterialParams(camera,lights, owner.Transform);
             GL.DrawElements(PrimitiveType.Triangles, elementBufferObject.VertexData.Length, DrawElementsType.UnsignedInt, 0);
         }
 

@@ -21,7 +21,6 @@ namespace SharpEngine
     {
 
         public Scene Scene;
-
         public Camera Camera;
         public Shader Shader;
         public Shader LampShader;
@@ -34,7 +33,7 @@ namespace SharpEngine
 
         protected override void OnLoad(EventArgs e)
         {
-            GL.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+            GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
             InitScene();
@@ -69,7 +68,9 @@ namespace SharpEngine
             LampShader = new Shader("Shaders/shader.vert", "Shaders/lamp.frag");
             var cubeMat = new ColorMaterial(LampShader, new Vector3(0.3f, 0.3f, 0.8f));
 
-            var pointLight = new Light(LampShader,LightType.PointLight,new Vector3(0.3f,0.3f,0.8f), new Vector3(1,1,1), 0.032f,0.09f, 1);
+            var pointLight = new Light(LampShader,LightType.PointLight,new Vector3(0.3f,0.3f,0.8f) * 0.4f, new Vector3(1,1,1), 0.032f,0.09f, 1);
+            var pointLight2 = new Light(LampShader,LightType.PointLight,new Vector3(0.3f,0.3f,0.8f) * 0.4f, new Vector3(1,1,1), 0.032f,0.09f, 1);
+            var directionalLight = new Light(LampShader,LightType.DirectionalLight,new Vector3(0.15f,0.15f,0.15f), new Vector3(1,1,1), 0.032f,0.09f, 1);
             Camera = new Camera(Width / (float) Height, true, 3.5f, 3);
 
             Mesh meshCube = MeshCreator.CreateMesh("Resources/cubeN.obj");
@@ -81,10 +82,19 @@ namespace SharpEngine
             cameraGameObject.AddComponent(Camera);
             cameraGameObject.AddComponent(new CameraMovement());
 
-            GameObject cubeGameObject = new GameObject(new Transform(new Vector3(2, 1.5f, -2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
-            cubeGameObject.AddComponent(new MeshRenderer(meshCube, cubeMat));
-            cubeGameObject.AddComponent(new HouseMovement());
-            cubeGameObject.AddComponent(pointLight);
+            GameObject pointLightGameObject = new GameObject(new Transform(new Vector3(2, 1.5f, -2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
+            pointLightGameObject.AddComponent(new MeshRenderer(meshCube, cubeMat));
+            pointLightGameObject.AddComponent(new HouseMovement());
+            pointLightGameObject.AddComponent(pointLight);
+
+            GameObject pointLight2GameObject = new GameObject(new Transform(new Vector3(2, 4f, -2), Vector3.Zero, new Vector3(0.5f, 0.5f, 0.5f)));
+            pointLight2GameObject.AddComponent(new MeshRenderer(meshCube, cubeMat));
+            //pointLight2GameObject.AddComponent(new HouseMovement());
+            pointLight2GameObject.AddComponent(pointLight2);
+
+            GameObject directionalLightGameObject = new GameObject(new Transform(Vector3.Zero, new Vector3(-5, 180, 0), Vector3.One));
+            //directionalLightGameObject.AddComponent(new MeshRenderer(meshCube, cubeMat));
+            directionalLightGameObject.AddComponent(directionalLight);
 
             GameObject groundGameObject = new GameObject();
             groundGameObject.AddComponent(new MeshRenderer(meshGround, stallMaterial));
@@ -104,13 +114,15 @@ namespace SharpEngine
 
 
 
-            Scene.AddGameObject(cubeGameObject);
+            Scene.AddGameObject(pointLightGameObject);
+            Scene.AddGameObject(pointLight2GameObject);
             Scene.AddGameObject(groundGameObject);
             Scene.AddGameObject(houseGameObject);
             Scene.AddGameObject(house2GameObject);
             Scene.AddGameObject(stallGameObject);
             Scene.AddGameObject(stall2GameObject);
             Scene.AddGameObject(cameraGameObject);
+            //Scene.AddGameObject(directionalLightGameObject);
 
             Scene.StartComponents();
         }

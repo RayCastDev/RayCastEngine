@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System.Collections.Generic;
+using OpenTK;
 using SharpEngine.Components;
 
 namespace SharpEngine.Render.Base
@@ -27,7 +28,7 @@ namespace SharpEngine.Render.Base
             Shader.SetMatrix4("view", camera.GetViewMatrix());
         }
 
-        public virtual void SetMaterialParams(Camera camera, Light light, Transform modelTransform)
+        public virtual void SetMaterialParams(Camera camera, List<Light> lights, Transform modelTransform)
         {
             SetModel(modelTransform);
             SetProjection(camera);

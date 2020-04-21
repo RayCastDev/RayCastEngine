@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SharpEngine.Components;
-using SharpEngine.Render;
 
 namespace SharpEngine.GameObjects
 {
@@ -9,13 +8,14 @@ namespace SharpEngine.GameObjects
         private readonly List<GameObject> gameObjects;
         private readonly List<MeshRenderer> meshRenderers;
 
-        public Camera Camera;
-        public Light Light;
+        public Camera MainCamera;
+        public List<Light> Lights;
 
         public Scene()
         {
             gameObjects = new List<GameObject>();
             meshRenderers = new List<MeshRenderer>();
+            Lights = new List<Light>();
         }
 
         public void AddGameObject(GameObject gameObject)
@@ -30,13 +30,13 @@ namespace SharpEngine.GameObjects
             Light light = gameObject.GetComponent<Light>();
             if (light != null)
             {
-                Light = light;
+                Lights.Add(light);
             }
 
             Camera camera = gameObject.GetComponent<Camera>();
             if (camera != null)
             {
-                Camera = camera;
+                MainCamera = camera;
             }
         }
 
@@ -44,7 +44,7 @@ namespace SharpEngine.GameObjects
         {
             foreach(var meshRenderer in meshRenderers)
             {
-                meshRenderer.RenderMesh(Camera, Light);
+                meshRenderer.RenderMesh(MainCamera, Lights);
             }
         }
 

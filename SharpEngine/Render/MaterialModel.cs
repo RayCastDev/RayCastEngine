@@ -1,4 +1,6 @@
-﻿using OpenTK;
+﻿using System;
+using System.Collections.Generic;
+using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using SharpEngine.Components;
 using SharpEngine.Render.Base;
@@ -21,7 +23,7 @@ namespace SharpEngine.Render
             Textures = textures;
         }
 
-        public override void SetMaterialParams(Camera camera, Light light, Transform modelTransform)
+        public override void SetMaterialParams(Camera camera, List<Light> lights, Transform modelTransform)
         {
             Shader.Use();
             Shader.SetVector3("material.ambient", Ambient);
@@ -29,28 +31,64 @@ namespace SharpEngine.Render
             Shader.SetVector3("material.diffuse", Diffuse);
             Shader.SetFloat("material.shininess", Shininess);
 
-            SetLight(light);
+            SetLight(lights);
 
             BindTexture();
             SetTextures();
             SetupViewPosition(camera.owner.Transform.Position);
 
 
-            base.SetMaterialParams(camera,light,modelTransform);
+            base.SetMaterialParams(camera,lights,modelTransform);
         }
 
-        public void SetLight(Light light)
+        public void SetLight(List<Light> lights)
         {
-            Shader.SetVector3("light.diffuse", light.LightColor);
-            Shader.SetVector3("light.ambient", light.LightColor);
-            Shader.SetVector3("light.specular", light.LightSpecular);
+            int pointLightsCount = 0;
+            for (int i = 0; i < lights.Count; i++)
+            {
+                if (lights[i].LightType == LightType.PointLight)
+                {
+                    SetPointLight(lights[i], i);
+                    pointLightsCount++;
+                }
+                if (lights[i].LightType == LightType.DirectionalLight)
+                {
+                    SetDirectionalLight(lights[i]);
+                }
+            }
+            Shader.SetInt("pointLightCount", pointLightsCount);
+        }
 
-            Shader.SetVector3("light.position", light.owner.Transform.Position);
-            Shader.SetVector3("light.direction", light.owner.Transform.Rotation);
+        private void SetDirectionalLight(Light light)
+        {
+            float pitch = MathHelper.DegreesToRadians(light.owner.Transform.Rotation.X);
+            float yaw = MathHelper.DegreesToRadians(light.owner.Transform.Rotation.Y);
+            Vector3 direction;
+            direction.X = (float)Math.Cos(pitch) * (float)Math.Cos(yaw);
+            direction.Y = (float)Math.Sin(pitch);
+            direction.Z = (float)Math.Cos(pitch) * (float)Math.Sin(yaw);
 
-            Shader.SetFloat("light.constant", light.Constant);
-            Shader.SetFloat("light.linear", light.Linear);
-            Shader.SetFloat("light.quadratic", light.Quadratic);
+            direction = direction.Normalized();
+
+            Shader.SetVector3("dirLight.direction", direction);
+
+            Shader.SetVector3("dirLight.diffuse", light.LightColor);
+            Shader.SetVector3("dirLight.ambient", light.LightColor);
+            Shader.SetVector3("dirLight.specular", light.LightSpecular);
+        }
+
+        private void SetPointLight(Light light, int index)
+        {
+            Shader.SetVector3($"pointLights[{index}].diffuse", light.LightColor);
+            Shader.SetVector3($"pointLights[{index}].ambient", light.LightColor);
+            Shader.SetVector3($"pointLights[{index}].specular", light.LightSpecular);
+
+            Shader.SetVector3($"pointLights[{index}].position", light.owner.Transform.Position);
+            //Shader.SetVector3($"pointLights[{index}].direction", light.owner.Transform.Rotation);
+
+            Shader.SetFloat($"pointLights[{index}].constant", light.Constant);
+            Shader.SetFloat($"pointLights[{index}].linear", light.Linear);
+            Shader.SetFloat($"pointLights[{index}].quadratic", light.Quadratic);
         }
 
 

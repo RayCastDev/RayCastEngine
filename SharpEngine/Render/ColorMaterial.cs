@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using System.Collections.Generic;
+using OpenTK;
 using SharpEngine.Components;
 using SharpEngine.Render.Base;
 
@@ -14,12 +15,12 @@ namespace SharpEngine.Render
             this.Color = color;
         }
 
-        public override void SetMaterialParams(Camera camera, Light light, Transform modelTransform)
+        public override void SetMaterialParams(Camera camera, List<Light> lights, Transform modelTransform)
         {
             Shader.Use();
             Shader.SetVector3("lightColor", Color);
 
-            base.SetMaterialParams(camera,light,modelTransform);
+            base.SetMaterialParams(camera,lights,modelTransform);
         }
 
         public override void ClearHandles()
